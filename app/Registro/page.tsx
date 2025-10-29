@@ -33,30 +33,29 @@ export default function Register() {
   return (
     <main className="min-h-screen flex flex-col bg-cyan-100">
       {/* 🔹 Encabezado a todo el ancho con logos alineados */}
-      <header className="w-full bg-sky-200 shadow-md flex items-center justify-start px-6 h-[100px]">
-        <div className="flex items-center gap-6">
-          <div className="h-[80px] w-auto flex items-center">
-            <Image
-              src="/linsi-logo.png"
-              alt="Logo LINSI"
-              width={100}
-              height={100}
-              className="object-contain"
-              priority
-            />
-          </div>
-
-          <div className="h-[80px] w-auto flex items-center">
-            <Image
-              src="/utn-logo.png"
-              alt="Logo UTN"
-              width={100}
-              height={150}
-              className="object-contain"
-              priority
-            />
-          </div>
-        </div>
+      <header className="w-full bg-sky-200 shadow-md flex items-center justify-between h-[100px]">
+        <div className="flex items-center h-full">
+                  <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
+                    <Image
+                      src="/linsi-logo.png"
+                      alt="Logo LINSI"
+                      width={100}
+                      height={120}
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                  <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
+                    <Image
+                      src="/utn-logo.png"
+                      alt="Logo UTN La Plata"
+                      width={100}
+                      height={120}
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                </div>
 
         {/* Franja azul a la derecha para completar el ancho */}
         <div className="flex-1 h-[100px] bg-[url('/header-bg.png')] bg-cover bg-center ml-6"></div>
