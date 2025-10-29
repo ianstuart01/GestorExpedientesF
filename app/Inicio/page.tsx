@@ -42,13 +42,13 @@ export default function AdminHome() {
       </header>
 
       <nav className="w-full bg-sky-400 text-black font-medium flex justify-center items-center py-3 shadow">
-        <button className="px-10 hover:underline">Inicio</button>
+        <button className="px-30 hover:text-white transition">Inicio</button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-10 hover:underline">Usuarios</button>
+        <button className="px-30 hover:text-white transition">Usuarios</button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-10 hover:underline">Expedientes</button>
+        <button className="px-30 hover:text-white transition">Expedientes</button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-10 hover:underline">Historial</button>
+        <button className="px-30 hover:text-white transition">Historial</button>
       </nav>
 
       <section className="flex flex-1 items-center justify-center bg-cyan-100">
