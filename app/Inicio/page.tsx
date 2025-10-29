@@ -9,9 +9,9 @@ export default function AdminHome() {
 
   return (
     <main className="min-h-screen flex flex-col bg-cyan-100">
-      <header className="w-full bg-sky-200 shadow-md flex items-center justify-between px-6 h-[100px]">
-        <div className="flex items-center gap-4">
-          <div className="h-[80px] w-auto flex items-center">
+      <header className="w-full bg-sky-200 shadow-md flex items-center justify-between h-[100px]">
+        <div className="flex items-center h-full">
+          <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
             <Image
               src="/linsi-logo.png"
               alt="Logo LINSI"
@@ -21,7 +21,7 @@ export default function AdminHome() {
               priority
             />
           </div>
-          <div className="h-[80px] w-auto flex items-center">
+          <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
             <Image
               src="/utn-logo.png"
               alt="Logo UTN La Plata"
@@ -35,7 +35,7 @@ export default function AdminHome() {
 
         <button
           onClick={handleLogout}
-          className="text-black font-medium hover:text-gray-700"
+          className="text-black font-semibold text-[14px] mr-6 hover:text-gray-700"
         >
           Cerrar Sesión
         </button>
