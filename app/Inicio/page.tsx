@@ -33,6 +33,13 @@ export default function AdminHome() {
           </div>
         </div>
 
+        <h1 className="text-center text-blue-900 font-bold text-lg leading-tight">
+          Gestor de Expedientes
+          <span className="block text-gray-700 text-sm font-medium">
+            Laboratorio de Innovaciones en Sistemas de Información
+          </span>
+        </h1>
+
         <button
           onClick={handleLogout}
           className="text-black font-semibold text-[14px] mr-6 hover:text-gray-700"

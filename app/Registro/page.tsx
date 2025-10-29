@@ -57,6 +57,15 @@ export default function Register() {
                   </div>
                 </div>
 
+                <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
+                    <h1 className="text-blue-900 font-bold text-lg leading-tight">
+                    Gestor de Expedientes
+                    </h1>
+                    <span className="block text-gray-700 text-sm font-medium">
+                    Laboratorio de Innovaciones en Sistemas de Información
+                    </span>
+                </div>
+
         {/* Franja azul a la derecha para completar el ancho */}
         <div className="flex-1 h-[100px] bg-[url('/header-bg.png')] bg-cover bg-center ml-6"></div>
       </header>
