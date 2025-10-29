@@ -86,7 +86,7 @@ export default function Home() {
                     <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition duration-150">
                         ¿Olvidaste tu contraseña?
                     </a>
-                    <a href="#" className="font-medium text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition duration-150">
+                    <a href="/Registro" className="font-medium text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition duration-150">
                         ¿Crear una cuenta?
                     </a>
                 </div>
