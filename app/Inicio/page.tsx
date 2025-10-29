@@ -53,7 +53,7 @@ export default function AdminHome() {
 
       <section className="flex flex-1 items-center justify-center bg-cyan-100">
         <h1 className="text-3xl font-semibold text-gray-900 text-center">
-          Ventana de Página de Inicio Administrador
+          Ventana de Página de Inicio 
         </h1>
       </section>
     </main>
