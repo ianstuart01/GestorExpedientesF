@@ -282,14 +282,14 @@ export default function Expedientes() {
                         
                         <div className="flex gap-2 mt-4 md:mt-0">
                           <button 
-                            onClick={() => handleVerDetalle(expediente)}
+                            onClick={() => router.push(`/Expediente/Detalle/${expediente.id}`)}
                             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
-                          >
+                            >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            Ver
-                          </button>
+                            Ver Detalle
+                            </button>
                           <button 
                             onClick={() => handleEditar(expediente)}
                             className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
