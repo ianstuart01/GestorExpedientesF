@@ -15,7 +15,7 @@ export default function Home() {
         // Por ahora, solo muestra el intento en la consola.
         
         // Redirigir a la página principal después del login
-        window.location.href = "/admin";
+        window.location.href = "/Inicio";
     };
 
     return (
