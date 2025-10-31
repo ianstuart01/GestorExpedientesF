@@ -53,7 +53,12 @@ export default function AdminHome() {
         <div className="border-l border-black h-6 mx-4"></div>
         <button className="px-30 hover:text-white transition">Usuarios</button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-30 hover:text-white transition">Expedientes</button>
+        <button 
+            onClick={() => window.location.href = "/Expediente"}
+            className="px-30 hover:text-white transition"
+        >
+            Expedientes
+        </button>
         <div className="border-l border-black h-6 mx-4"></div>
         <button className="px-30 hover:text-white transition">Historial</button>
       </nav>
