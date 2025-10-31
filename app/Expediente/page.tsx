@@ -12,7 +12,11 @@ const expedientesEjemplo = [
     fecha: "15/10/2025",
     observacion: "Laboratorio LINSI - Desarrollo Web",
     usuario: "Juan Pérez",
-    estado: "Activo"
+    estado: "Activo",
+    subTema: "Desarrollo Frontend",
+    fechaAlta: "2025-10-15",
+    alcance: "Interno",
+    caratula: "Sistema de Gestión de Expedientes"
   },
   {
     id: "002",
@@ -21,40 +25,55 @@ const expedientesEjemplo = [
     fecha: "12/10/2025",
     observacion: "Sistema de Gestión Académica",
     usuario: "María González",
-    estado: "En revisión"
-  },
-  {
-    id: "003",
-    numero: "003",
-    tema: "Proyecto Final",
-    fecha: "08/10/2025",
-    observacion: "Aplicación Móvil Educativa",
-    usuario: "Carlos Rodríguez",
-    estado: "Completado"
-  },
-  {
-    id: "004",
-    numero: "004",
-    tema: "Práctica Profesional",
-    fecha: "05/10/2025",
-    observacion: "Análisis de Datos",
-    usuario: "Ana López",
-    estado: "Activo"
+    estado: "En revisión",
+    subTema: "Base de Datos",
+    fechaAlta: "2025-10-12",
+    alcance: "Externo",
+    caratula: "Plataforma Educativa Integral"
   }
 ];
 
 export default function Expedientes() {
-    const router = useRouter();
+  const router = useRouter();
   const [expedientes, setExpedientes] = useState(expedientesEjemplo);
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("todos");
+  const [mostrarModalEliminar, setMostrarModalEliminar] = useState(false);
+  const [expedienteAEliminar, setExpedienteAEliminar] = useState<any>(null);
 
-  const handleLogout = () => {
-    window.location.href = "/";
+  const handleEditar = (expediente: any) => {
+    // Navegar a la página de edición con los datos del expediente
+    router.push(`/Expediente/Editar/${expediente.id}`);
   };
 
-  const navegarA = (ruta: string) => {
-    window.location.href = ruta;
+  const handleEliminarClick = (expediente: any) => {
+    setExpedienteAEliminar(expediente);
+    setMostrarModalEliminar(true);
+  };
+
+  const confirmarEliminar = () => {
+    if (expedienteAEliminar) {
+      // Simular eliminación
+      const nuevosExpedientes = expedientes.filter(exp => exp.id !== expedienteAEliminar.id);
+      setExpedientes(nuevosExpedientes);
+      
+      // Aquí iría la llamada al endpoint del backend
+      console.log("Eliminando expediente:", expedienteAEliminar.id);
+      
+      alert(`Expediente ${expedienteAEliminar.numero} eliminado exitosamente`);
+    }
+    setMostrarModalEliminar(false);
+    setExpedienteAEliminar(null);
+  };
+
+  const cancelarEliminar = () => {
+    setMostrarModalEliminar(false);
+    setExpedienteAEliminar(null);
+  };
+
+  const handleVerDetalle = (expediente: any) => {
+    // Podrías crear una página de detalle o mostrar un modal
+    alert(`Detalle del expediente:\nNúmero: ${expediente.numero}\nTema: ${expediente.tema}\nUsuario: ${expediente.usuario}\nEstado: ${expediente.estado}`);
   };
 
   const filtrarExpedientes = expedientes.filter(expediente => {
@@ -115,7 +134,7 @@ export default function Expedientes() {
         </h1>
 
         <button
-          onClick={handleLogout}
+          onClick={() => window.location.href = "/"}
           className="text-black font-semibold text-[14px] mr-6 hover:text-gray-700"
         >
           Cerrar Sesión
@@ -125,7 +144,7 @@ export default function Expedientes() {
       {/* Navegación */}
       <nav className="w-full bg-sky-400 text-black font-medium flex justify-center items-center py-3 shadow">
         <button 
-          onClick={() => navegarA("/Inicio")}
+          onClick={() => router.push("/Inicio")}
           className="px-30 hover:text-white transition"
         >
           Inicio
@@ -149,18 +168,18 @@ export default function Expedientes() {
               <div className="flex flex-col md:flex-row gap-4 flex-1 w-full">
                 {/* Buscador */}
                 <div className="flex-1">
-                    <label htmlFor="buscar" className="block text-sm font-medium text-gray-900 mb-2">
-                        Buscar por usuario o tema
-                    </label>
-                    <div className="relative">
-                        <input
-                        type="text"
-                        id="buscar"
-                        placeholder="Nombre, apellido o tema..."
-                        value={busqueda}
-                        onChange={(e) => setBusqueda(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                        />
+                  <label htmlFor="buscar" className="block text-sm font-medium text-gray-900 mb-2">
+                    Buscar por usuario o tema
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="buscar"
+                      placeholder="Nombre, apellido o tema..."
+                      value={busqueda}
+                      onChange={(e) => setBusqueda(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    />
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -171,15 +190,15 @@ export default function Expedientes() {
 
                 {/* Filtro por estado */}
                 <div className="w-full md:w-48">
-                    <label htmlFor="estado" className="block text-sm font-medium text-gray-900 mb-2">
-                        Filtrar por estado
-                    </label>
-                    <select
-                        id="estado"
-                        value={filtroEstado}
-                        onChange={(e) => setFiltroEstado(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                    >
+                  <label htmlFor="estado" className="block text-sm font-medium text-gray-900 mb-2">
+                    Filtrar por estado
+                  </label>
+                  <select
+                    id="estado"
+                    value={filtroEstado}
+                    onChange={(e) => setFiltroEstado(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                  >
                     <option value="todos">Todos los estados</option>
                     <option value="Activo">Activo</option>
                     <option value="En revisión">En revisión</option>
@@ -191,14 +210,14 @@ export default function Expedientes() {
               {/* Botón Agregar Expediente */}
               <div className="w-full md:w-auto mt-4 md:mt-0">
                 <button 
-                    onClick={() => router.push('/Expediente/Crear')}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 flex items-center justify-center gap-2"
-                    >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Agregar Expediente
-                    </button>
+                  onClick={() => router.push('/Expediente/Crear')}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                  Agregar Expediente
+                </button>
               </div>
             </div>
           </div>
@@ -207,9 +226,9 @@ export default function Expedientes() {
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Header de la tabla */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
-                <h2 className="text-xl font-bold text-white text-center">
-                    Lista de Expedientes ({filtrarExpedientes.length})
-                </h2>
+              <h2 className="text-xl font-bold text-white text-center">
+                Lista de Expedientes ({filtrarExpedientes.length})
+              </h2>
             </div>
 
             {/* Contenido de expedientes */}
@@ -262,19 +281,28 @@ export default function Expedientes() {
                         </div>
                         
                         <div className="flex gap-2 mt-4 md:mt-0">
-                          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1">
+                          <button 
+                            onClick={() => handleVerDetalle(expediente)}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
+                          >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             Ver
                           </button>
-                          <button className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1">
+                          <button 
+                            onClick={() => handleEditar(expediente)}
+                            className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
+                          >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                             Editar
                           </button>
-                          <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1">
+                          <button 
+                            onClick={() => handleEliminarClick(expediente)}
+                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
+                          >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -290,6 +318,43 @@ export default function Expedientes() {
           </div>
         </div>
       </section>
+
+      {/* Modal de Confirmación para Eliminar */}
+      {mostrarModalEliminar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-shrink-0">
+                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Confirmar Eliminación
+              </h3>
+            </div>
+            
+            <p className="text-gray-600 mb-6">
+              ¿Estás seguro de que deseas eliminar el expediente <strong>#{expedienteAEliminar?.numero}</strong> - {expedienteAEliminar?.tema}? Esta acción no se puede deshacer.
+            </p>
+            
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={cancelarEliminar}
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarEliminar}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
