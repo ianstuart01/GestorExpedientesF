@@ -31,11 +31,11 @@ export default function CrearExpediente() {
     
     // Simulamos el guardado y volvemos a la lista
     alert("Expediente creado exitosamente");
-    router.push("/expedientes");
+    router.push("/Expediente");
   };
 
   const handleVolver = () => {
-    router.push("/expedientes");
+    router.push("/Expediente");
   };
 
   const handleLogout = () => {
@@ -44,7 +44,7 @@ export default function CrearExpediente() {
 
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">
-      {/* Header */}
+      {/* Header SOLO sin navegación */}
       <header className="w-full bg-sky-200 shadow-md flex items-center justify-between h-[100px]">
         <div className="flex items-center h-full">
           <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
@@ -83,27 +83,6 @@ export default function CrearExpediente() {
           Cerrar Sesión
         </button>
       </header>
-
-      {/* Navegación */}
-      <nav className="w-full bg-sky-400 text-black font-medium flex justify-center items-center py-3 shadow">
-        <button 
-          onClick={() => router.push("/admin")}
-          className="px-6 hover:text-white transition"
-        >
-          Inicio
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-6 hover:text-white transition">Usuarios</button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button 
-          onClick={() => router.push("/expedientes")}
-          className="px-6 hover:text-white transition"
-        >
-          Expedientes
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-6 hover:text-white transition">Historial</button>
-      </nav>
 
       {/* Contenido Principal */}
       <section className="flex-1 p-6 bg-cyan-50">

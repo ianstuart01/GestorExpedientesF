@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 // Datos de ejemplo para los expedientes
 const expedientesEjemplo = [
@@ -44,6 +44,7 @@ const expedientesEjemplo = [
 ];
 
 export default function Expedientes() {
+    const router = useRouter();
   const [expedientes, setExpedientes] = useState(expedientesEjemplo);
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("todos");
@@ -190,7 +191,7 @@ export default function Expedientes() {
               {/* Botón Agregar Expediente */}
               <div className="w-full md:w-auto mt-4 md:mt-0">
                 <button 
-                    onClick={() => router.push('/Crear')}
+                    onClick={() => router.push('/Expediente/Crear')}
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 flex items-center justify-center gap-2"
                     >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
