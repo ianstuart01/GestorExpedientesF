@@ -1,21 +1,51 @@
 "use client";
 import React, { useState } from 'react';
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const router = useRouter();
+
+    // Cuentas hardcodeadas para testing
+    const cuentasValidas = [
+        { email: 'admin@utn.com', password: 'admin123', rol: 'admin' },
+        { email: 'usuario@utn.com', password: 'user123', rol: 'user' },
+        { email: 'test@test.com', password: 'test', rol: 'user' },
+        { email: 'linsi@utn.com', password: 'linsi', rol: 'admin' }
+    ];
 
     const handleLogin = (e) => {
         e.preventDefault();
+        setError(''); // Limpiar error anterior
+
         console.log('--- INTENTO DE INICIO DE SESIÓN ---');
         console.log(`Email: ${email}`);
         console.log(`Password: ${password}`);
-        // Aquí iría la lógica de autenticación real.
-        // Por ahora, solo muestra el intento en la consola.
-        
-        // Redirigir a la página principal después del login
-        window.location.href = "/admin";
+
+        // Validar credenciales
+        const cuentaValida = cuentasValidas.find(
+            cuenta => cuenta.email === email && cuenta.password === password
+        );
+
+        if (cuentaValida) {
+            console.log('✅ Login exitoso');
+            console.log(`Rol: ${cuentaValida.rol}`);
+            
+            // Aquí podrías guardar en localStorage o context
+            localStorage.setItem('usuario', JSON.stringify({
+                email: cuentaValida.email,
+                rol: cuentaValida.rol
+            }));
+            
+            // Redirigir a la página de inicio
+            router.push('/Inicio');
+        } else {
+            console.log('❌ Credenciales incorrectas');
+            setError('Email o contraseña incorrectos');
+        }
     };
 
     return (
@@ -68,6 +98,25 @@ export default function Home() {
                         <p className="mt-2 text-sm text-gray-600">
                             Bienvenido al Gestor de Expedientes
                         </p>
+                    </div>
+
+                    {/* Mensaje de error */}
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p className="text-red-700 text-sm text-center">{error}</p>
+                        </div>
+                    )}
+
+                    {/* Información de testing (solo para desarrollo) */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                        <p className="text-blue-700 text-sm text-center font-medium">
+                            Cuentas de prueba:
+                        </p>
+                        <div className="text-blue-600 text-xs text-center mt-1 space-y-1">
+                            <p>admin@utn.com / admin123</p>
+                            <p>usuario@utn.com / user123</p>
+                            <p>test@test.com / test</p>
+                        </div>
                     </div>
 
                     {/* Formulario */}
