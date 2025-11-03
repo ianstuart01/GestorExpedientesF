@@ -3,81 +3,177 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-// ✅ DATOS SEGUROS - Emails genéricos sin información real
+
 const usuariosEjemplo = [
   {
     id: "1",
     nombre: "Juan",
     apellido: "Pérez",
     email: "usuario1@ejemplo.com",
-    sector: "Desarrollo",
+    sector: ["Desarrollo"],
     rol: "Administrador",
     estado: "Activo",
-    fechaCreacion: "2025-01-15"
+    fechaCreacion: "2025-01-15",
+    documento: "30.123.456"
   },
   {
     id: "2",
     nombre: "María",
     apellido: "González",
     email: "usuario2@ejemplo.com",
-    sector: "Diseño",
+    sector: ["Diseño", "Calidad"],
     rol: "Usuario",
     estado: "Activo",
-    fechaCreacion: "2025-02-20"
+    fechaCreacion: "2025-02-20",
+    documento: "30.234.567"
   },
   {
     id: "3",
     nombre: "Carlos",
     apellido: "Rodríguez",
     email: "usuario3@ejemplo.com",
-    sector: "Calidad",
+    sector: ["Calidad"],
     rol: "Usuario",
     estado: "Inactivo",
-    fechaCreacion: "2025-01-10"
+    fechaCreacion: "2025-01-10",
+    documento: "30.345.678"
   },
   {
     id: "4",
     nombre: "Ana",
     apellido: "López",
     email: "usuario4@ejemplo.com",
-    sector: "Desarrollo",
+    sector: ["Desarrollo", "Investigación"],
     rol: "Administrador",
     estado: "Activo",
-    fechaCreacion: "2025-03-05"
+    fechaCreacion: "2025-03-05",
+    documento: "30.456.789"
   }
 ];
+
+//Base de datos de usuarios disponibles para agregar
+const usuariosDisponibles = [
+  {
+    id: "5",
+    nombre: "Laura",
+    apellido: "Martínez",
+    email: "laura.martinez@ejemplo.com",
+    documento: "30.567.890",
+    sector: ["Investigación"]
+  },
+  {
+    id: "6",
+    nombre: "Pedro",
+    apellido: "Gómez",
+    email: "pedro.gomez@ejemplo.com",
+    documento: "30.678.901",
+    sector: ["Desarrollo", "Calidad"]
+  },
+  {
+    id: "7",
+    nombre: "Sofía",
+    apellido: "Hernández",
+    email: "sofia.hernandez@ejemplo.com",
+    documento: "30.789.012",
+    sector: ["Diseño"]
+  },
+  {
+    id: "8",
+    nombre: "Diego",
+    apellido: "Ramírez",
+    email: "diego.ramirez@ejemplo.com",
+    documento: "30.890.123",
+    sector: ["Administración"]
+  }
+];
+
+//Lista de sectores disponibles para asignar
+const sectoresDisponibles = ["Desarrollo", "Diseño", "Calidad", "Investigación", "Administración"];
+
+//Lista de roles disponibles
+const rolesDisponibles = ["Administrador", "Usuario", "Supervisor"];
 
 export default function Usuarios() {
   const router = useRouter();
   const [usuarios, setUsuarios] = useState(usuariosEjemplo);
   const [busqueda, setBusqueda] = useState("");
+  const [busquedaAgregar, setBusquedaAgregar] = useState("");
   const [filtroRol, setFiltroRol] = useState("todos");
   const [filtroEstado, setFiltroEstado] = useState("todos");
-
-  const handleEditar = (usuario: any) => {
-    router.push(`/Usuarios/Editar/${usuario.id}`);
-  };
+  const [filtroSector, setFiltroSector] = useState("todos");
+  const [mostrarAgregarUsuario, setMostrarAgregarUsuario] = useState(false);
 
   const handleEliminarClick = (usuario: any) => {
-    router.push(`/Usuarios/Eliminar/${usuario.id}`);
+    router.push(`/Usuario/Eliminar/${usuario.id}`);
   };
 
   const handleVerDetalle = (usuario: any) => {
-    router.push(`/Usuarios/Detalle/${usuario.id}`);
+    router.push(`/Usuario/Detalle/${usuario.id}`);
   };
 
+  //Función para agregar usuario desde la búsqueda
+  const handleAgregarUsuario = (usuario: any) => {
+    const nuevoUsuario = {
+      ...usuario,
+      rol: "Usuario", // Rol por defecto
+      estado: "Activo", // Estado por defecto
+      fechaCreacion: new Date().toISOString().split('T')[0] // Fecha actual
+    };
+
+    setUsuarios(prevUsuarios => [...prevUsuarios, nuevoUsuario]);
+    setBusquedaAgregar(""); // Limpiar búsqueda
+    setMostrarAgregarUsuario(false); // Ocultar panel
+  };
+
+  //Función para asignar/remover sectores a usuario
+  const handleAsignarSector = (usuarioId: string, sector: string) => {
+    setUsuarios(prevUsuarios => 
+      prevUsuarios.map(usuario => {
+        if (usuario.id === usuarioId) {
+          const sectoresActuales = usuario.sector;
+          const nuevosSectores = sectoresActuales.includes(sector)
+            ? sectoresActuales.filter(s => s !== sector)
+            : [...sectoresActuales, sector];
+          
+          return { ...usuario, sector: nuevosSectores };
+        }
+        return usuario;
+      })
+    );
+  };
+
+  //Función para cambiar rol de usuario
+  const handleCambiarRol = (usuarioId: string, nuevoRol: string) => {
+    setUsuarios(prevUsuarios =>
+      prevUsuarios.map(usuario =>
+        usuario.id === usuarioId ? { ...usuario, rol: nuevoRol } : usuario
+      )
+    );
+  };
+
+  //Filtrar usuarios para la lista principal
   const filtrarUsuarios = usuarios.filter(usuario => {
     const coincideBusqueda = 
       usuario.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
       usuario.apellido.toLowerCase().includes(busqueda.toLowerCase()) ||
       usuario.email.toLowerCase().includes(busqueda.toLowerCase()) ||
-      usuario.sector.toLowerCase().includes(busqueda.toLowerCase());
+      usuario.documento.toLowerCase().includes(busqueda.toLowerCase()) ||
+      usuario.sector.some(s => s.toLowerCase().includes(busqueda.toLowerCase()));
     
     const coincideRol = filtroRol === "todos" || usuario.rol === filtroRol;
     const coincideEstado = filtroEstado === "todos" || usuario.estado === filtroEstado;
+    const coincideSector = filtroSector === "todos" || usuario.sector.includes(filtroSector);
     
-    return coincideBusqueda && coincideRol && coincideEstado;
+    return coincideBusqueda && coincideRol && coincideEstado && coincideSector;
   });
+
+  //Filtrar usuarios disponibles para agregar
+  const usuariosParaAgregar = usuariosDisponibles.filter(usuario => 
+    !usuarios.some(u => u.id === usuario.id) && // No mostrar usuarios ya agregados
+    (usuario.nombre.toLowerCase().includes(busquedaAgregar.toLowerCase()) ||
+     usuario.apellido.toLowerCase().includes(busquedaAgregar.toLowerCase()) ||
+     usuario.documento.includes(busquedaAgregar))
+  );
 
   const getEstadoColor = (estado: string) => {
     switch (estado) {
@@ -96,6 +192,8 @@ export default function Usuarios() {
         return "bg-purple-100 text-purple-800 border-purple-200";
       case "Usuario":
         return "bg-blue-100 text-blue-800 border-blue-200";
+      case "Supervisor":
+        return "bg-orange-100 text-orange-800 border-orange-200";
       default:
         return "bg-gray-100 text-gray-800 border-gray-200";
     }
@@ -176,7 +274,7 @@ export default function Usuarios() {
                 {/* Buscador */}
                 <div className="flex-1">
                   <label htmlFor="buscar" className="block text-sm font-medium text-gray-900 mb-2">
-                    Buscar por nombre, apellido, email o sector
+                    Buscar por nombre, apellido, email, documento o sector
                   </label>
                   <div className="relative">
                     <input
@@ -204,11 +302,12 @@ export default function Usuarios() {
                     id="rol"
                     value={filtroRol}
                     onChange={(e) => setFiltroRol(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 bg-white"
                   >
                     <option value="todos">Todos los roles</option>
-                    <option value="Administrador">Administrador</option>
-                    <option value="Usuario">Usuario</option>
+                    {rolesDisponibles.map(rol => (
+                      <option key={rol} value={rol}>{rol}</option>
+                    ))}
                   </select>
                 </div>
 
@@ -228,12 +327,30 @@ export default function Usuarios() {
                     <option value="Inactivo">Inactivo</option>
                   </select>
                 </div>
+
+                {/* Filtro por sector */}
+                <div className="w-full md:w-48">
+                  <label htmlFor="sector" className="block text-sm font-medium text-gray-900 mb-2">
+                    Filtrar por sector
+                  </label>
+                  <select
+                    id="sector"
+                    value={filtroSector}
+                    onChange={(e) => setFiltroSector(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                  >
+                    <option value="todos">Todos los sectores</option>
+                    {sectoresDisponibles.map(sector => (
+                      <option key={sector} value={sector}>{sector}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               {/* Botón Agregar Usuario */}
               <div className="w-full md:w-auto mt-4 md:mt-0">
                 <button 
-                  onClick={() => router.push('/Usuarios/Crear')}
+                  onClick={() => setMostrarAgregarUsuario(!mostrarAgregarUsuario)}
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,6 +360,78 @@ export default function Usuarios() {
                 </button>
               </div>
             </div>
+
+            {/* ✅ Panel para agregar usuarios */}
+            {mostrarAgregarUsuario && (
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Agregar Nuevo Usuario</h3>
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-end">
+                  <div className="flex-1">
+                    <label htmlFor="buscarAgregar" className="block text-sm font-medium text-gray-700 mb-2">
+                      Buscar por nombre, apellido o DNI
+                    </label>
+                    <input
+                      type="text"
+                      id="buscarAgregar"
+                      placeholder="Ej: Laura Martínez o 30.567.890"
+                      value={busquedaAgregar}
+                      onChange={(e) => setBusquedaAgregar(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-gray-900"
+                    />
+                  </div>
+                  
+                  <div className="w-full md:w-auto">
+                    <button 
+                      onClick={() => setBusquedaAgregar("")}
+                      className="w-full md:w-auto bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+                    >
+                      Limpiar
+                    </button>
+                  </div>
+                </div>
+
+                {/* Lista de usuarios encontrados */}
+                {busquedaAgregar && (
+                  <div className="mt-4 max-h-40 overflow-y-auto">
+                    {usuariosParaAgregar.length === 0 ? (
+                      <p className="text-sm text-gray-500 text-center py-2">
+                        No se encontraron usuarios con esos datos
+                      </p>
+                    ) : (
+                      <div className="space-y-2">
+                        {usuariosParaAgregar.map(usuario => (
+                          <div
+                            key={usuario.id}
+                            className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+                          >
+                            <div>
+                              <p className="font-medium text-gray-900">
+                                {usuario.nombre} {usuario.apellido}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                {usuario.email} • DNI: {usuario.documento}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                Sectores: {usuario.sector.join(", ")}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => handleAgregarUsuario(usuario)}
+                              className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm font-medium transition duration-200 flex items-center gap-1"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                              </svg>
+                              Agregar
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Lista de Usuarios */}
@@ -292,7 +481,13 @@ export default function Usuarios() {
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                               </svg>
-                              {usuario.sector}
+                              {usuario.sector.join(", ")}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                              Doc: {usuario.documento}
                             </span>
                             <span className="flex items-center gap-1">
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -300,6 +495,41 @@ export default function Usuarios() {
                               </svg>
                               Creado: {usuario.fechaCreacion}
                             </span>
+                          </div>
+
+                          {/* Gestión de roles y sectores */}
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-medium text-gray-700">Cambiar rol:</span>
+                              <select
+                                value={usuario.rol}
+                                onChange={(e) => handleCambiarRol(usuario.id, e.target.value)}
+                                className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 bg-gray-800 text-white" // ✅ Más oscuro
+                              >
+                                {rolesDisponibles.map(rol => (
+                                  <option key={rol} value={rol}>{rol}</option>
+                                ))}
+                              </select>
+                            </div>
+                            
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-medium text-gray-700">Asignar sectores:</span>
+                              <div className="flex flex-wrap gap-1">
+                                {sectoresDisponibles.map(sector => (
+                                  <button
+                                    key={sector}
+                                    onClick={() => handleAsignarSector(usuario.id, sector)}
+                                    className={`text-xs px-2 py-1 rounded border transition ${
+                                      usuario.sector.includes(sector)
+                                        ? "bg-blue-100 text-blue-800 border-blue-300"
+                                        : "bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200"
+                                    }`}
+                                  >
+                                    {sector} {usuario.sector.includes(sector) ? "✓" : "+"}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                         </div>
                         
@@ -311,16 +541,7 @@ export default function Usuarios() {
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            Ver
-                          </button>
-                          <button 
-                            onClick={() => handleEditar(usuario)}
-                            className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            Editar
+                            Ver Detalle
                           </button>
                           <button 
                             onClick={() => handleEliminarClick(usuario)}
