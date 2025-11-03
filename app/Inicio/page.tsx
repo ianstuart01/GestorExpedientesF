@@ -117,7 +117,7 @@ export default function Home() {
         </button>
         <div className="border-l border-black h-6 mx-4"></div>
         <button 
-          onClick={() => router.push("/Usuarios")}
+          onClick={() => router.push("/Usuario")}
           className="px-30 hover:text-white transition"
         >
           Usuarios

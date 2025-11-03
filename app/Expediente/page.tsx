@@ -150,7 +150,12 @@ export default function Expedientes() {
           Inicio
         </button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-30 hover:text-white transition">Usuarios</button>
+        <button 
+          onClick={() => router.push("/Usuario")}
+          className="px-30 hover:text-white transition"
+        >
+          Usuarios
+        </button>
         <div className="border-l border-black h-6 mx-4"></div>
         <button className="px-30 hover:text-white transition font-semibold text-white">
           Expedientes
