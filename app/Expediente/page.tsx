@@ -51,6 +51,16 @@ export default function Expedientes() {
     setMostrarModalEliminar(true);
   };
 
+  // ✅ FUNCIÓN: Manejar clic en botón Movimientos
+  const handleMovimientoClick = (expediente: any) => {
+    router.push(`/Movimiento/Registro/${expediente.id}`);
+  };
+
+  // ✅ NUEVA FUNCIÓN: Ver lista de movimientos
+  const handleVerListaMovimientos = () => {
+    router.push("/Movimiento/Listar");
+  };
+
   const confirmarEliminar = () => {
     if (expedienteAEliminar) {
       // Simular eliminación
@@ -227,6 +237,29 @@ export default function Expedientes() {
             </div>
           </div>
 
+          {/* ✅ NUEVO: Botón Ver Lista de Movimientos */}
+          <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg shadow-md p-4 mb-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-white mb-2">
+                  Gestión de Movimientos
+                </h2>
+                <p className="text-purple-100 text-sm">
+                  Visualiza y gestiona todos los movimientos del sistema
+                </p>
+              </div>
+              <button
+                onClick={handleVerListaMovimientos}
+                className="mt-4 md:mt-0 px-6 py-3 bg-white text-purple-700 rounded-lg hover:bg-purple-50 transition font-semibold flex items-center gap-2 shadow-lg"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Ver Lista de Movimientos
+              </button>
+            </div>
+          </div>
+
           {/* Lista de Expedientes */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Header de la tabla */}
@@ -289,12 +322,24 @@ export default function Expedientes() {
                           <button 
                             onClick={() => router.push(`/Expediente/Detalle/${expediente.id}`)}
                             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
-                            >
+                          >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             Ver Detalle
-                            </button>
+                          </button>
+                          
+                          {/* ✅ BOTÓN MOVIMIENTOS AGREGADO */}
+                          <button 
+                            onClick={() => handleMovimientoClick(expediente)}
+                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            Movimiento
+                          </button>
+                          
                           <button 
                             onClick={() => handleEditar(expediente)}
                             className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
@@ -307,12 +352,12 @@ export default function Expedientes() {
                           <button 
                             onClick={() => router.push(`/Expediente/Eliminar/${expediente.id}`)}
                             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
-                            >
+                          >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                             Eliminar
-                            </button>
+                          </button>
                         </div>
                       </div>
                     </div>
