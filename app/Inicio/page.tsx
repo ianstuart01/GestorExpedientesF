@@ -51,7 +51,12 @@ export default function AdminHome() {
       <nav className="w-full bg-sky-400 text-black font-medium flex justify-center items-center py-3 shadow">
         <button className="px-30 hover:text-white transition">Inicio</button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-30 hover:text-white transition">Usuarios</button>
+        <button 
+            onClick={() => window.location.href = "/Usuario"}
+            className="px-30 hover:text-white transition"
+        >
+            Usuarios
+        </button>
         <div className="border-l border-black h-6 mx-4"></div>
         <button 
             onClick={() => window.location.href = "/Expediente"}
