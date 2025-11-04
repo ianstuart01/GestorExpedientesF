@@ -161,7 +161,7 @@ export default function RegistrarMovimiento() {
   };
 
   const handleVolver = () => {
-    router.push(`/Expediente/Detalle/${expedienteId}`);
+    router.push(`/Movimiento/Lista/${expedienteId}`);
   };
 
   const handleLogout = () => {

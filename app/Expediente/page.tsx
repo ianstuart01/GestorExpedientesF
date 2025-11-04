@@ -56,9 +56,9 @@ export default function Expedientes() {
     router.push(`/Movimiento/Registro/${expediente.id}`);
   };
 
-  // ✅ NUEVA FUNCIÓN: Ver lista de movimientos
+  // ✅ NUEVA FUNCIÓN: Ver lista de movimientos global
   const handleVerListaMovimientos = () => {
-    router.push("/Movimiento/Listar");
+    router.push("/Movimiento/Lista");
   };
 
   const confirmarEliminar = () => {
@@ -171,7 +171,12 @@ export default function Expedientes() {
           Expedientes
         </button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-30 hover:text-white transition">Historial</button>
+        <button 
+          onClick={() => router.push("/Movimiento/Lista")}
+          className="px-30 hover:text-white transition"
+        >
+          Historial Movimientos
+        </button>
       </nav>
 
       {/* Contenido Principal */}
@@ -234,29 +239,6 @@ export default function Expedientes() {
                   Agregar Expediente
                 </button>
               </div>
-            </div>
-          </div>
-
-          {/* ✅ NUEVO: Botón Ver Lista de Movimientos */}
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg shadow-md p-4 mb-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-white mb-2">
-                  Gestión de Movimientos
-                </h2>
-                <p className="text-purple-100 text-sm">
-                  Visualiza y gestiona todos los movimientos del sistema
-                </p>
-              </div>
-              <button
-                onClick={handleVerListaMovimientos}
-                className="mt-4 md:mt-0 px-6 py-3 bg-white text-purple-700 rounded-lg hover:bg-purple-50 transition font-semibold flex items-center gap-2 shadow-lg"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                Ver Lista de Movimientos
-              </button>
             </div>
           </div>
 
@@ -329,15 +311,15 @@ export default function Expedientes() {
                             Ver Detalle
                           </button>
                           
-                          {/* ✅ BOTÓN MOVIMIENTOS AGREGADO */}
+                          {/* ✅ BOTÓN VER MOVIMIENTOS DEL EXPEDIENTE */}
                           <button 
-                            onClick={() => handleMovimientoClick(expediente)}
-                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
+                            onClick={() => router.push(`/Movimiento/Lista/${expediente.id}`)}
+                            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
-                            Movimiento
+                            Ver Movimientos
                           </button>
                           
                           <button 
