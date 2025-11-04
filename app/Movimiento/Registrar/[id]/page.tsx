@@ -285,31 +285,6 @@ export default function RegistrarMovimiento() {
         </button>
       </header>
 
-      {/* Navegación */}
-      <nav className="w-full bg-sky-400 text-black font-medium flex justify-center items-center py-3 shadow">
-        <button 
-          onClick={() => router.push("/Inicio")}
-          className="px-30 hover:text-white transition"
-        >
-          Inicio
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button 
-          onClick={() => router.push("/Usuarios")}
-          className="px-30 hover:text-white transition"
-        >
-          Usuarios
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button 
-          onClick={() => router.push("/Expediente")}
-          className="px-30 hover:text-white transition"
-        >
-          Expedientes
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-30 hover:text-white transition">Historial</button>
-      </nav>
 
       {/* Contenido Principal */}
       <section className="flex-1 p-6 bg-cyan-50">

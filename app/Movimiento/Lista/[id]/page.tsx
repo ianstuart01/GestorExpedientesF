@@ -356,7 +356,7 @@ export default function ListaMovimientosExpediente() {
         </button>
         <div className="border-l border-black h-6 mx-4"></div>
         <button 
-          onClick={() => router.push("/Usuarios")}
+          onClick={() => router.push("/Usuario")}
           className="px-30 hover:text-white transition"
         >
           Usuarios
@@ -370,7 +370,7 @@ export default function ListaMovimientosExpediente() {
         </button>
         <div className="border-l border-black h-6 mx-4"></div>
         <button className="px-30 hover:text-white transition font-semibold text-white">
-          Historial
+          Historial Movimientos
         </button>
       </nav>
 
