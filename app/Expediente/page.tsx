@@ -51,6 +51,16 @@ export default function Expedientes() {
     setMostrarModalEliminar(true);
   };
 
+  // ✅ FUNCIÓN: Manejar clic en botón Movimientos
+  const handleMovimientoClick = (expediente: any) => {
+    router.push(`/Movimiento/Registro/${expediente.id}`);
+  };
+
+  // ✅ NUEVA FUNCIÓN: Ver lista de movimientos global
+  const handleVerListaMovimientos = () => {
+    router.push("/Movimiento/Lista");
+  };
+
   const confirmarEliminar = () => {
     if (expedienteAEliminar) {
       // Simular eliminación
@@ -161,7 +171,12 @@ export default function Expedientes() {
           Expedientes
         </button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-30 hover:text-white transition">Historial</button>
+        <button 
+          onClick={() => router.push("/Movimiento/Lista")}
+          className="px-30 hover:text-white transition"
+        >
+          Historial Movimientos
+        </button>
       </nav>
 
       {/* Contenido Principal */}
@@ -289,12 +304,24 @@ export default function Expedientes() {
                           <button 
                             onClick={() => router.push(`/Expediente/Detalle/${expediente.id}`)}
                             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
-                            >
+                          >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             Ver Detalle
-                            </button>
+                          </button>
+                          
+                          {/* ✅ BOTÓN VER MOVIMIENTOS DEL EXPEDIENTE */}
+                          <button 
+                            onClick={() => router.push(`/Movimiento/Lista/${expediente.id}`)}
+                            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            Ver Movimientos
+                          </button>
+                          
                           <button 
                             onClick={() => handleEditar(expediente)}
                             className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
@@ -307,12 +334,12 @@ export default function Expedientes() {
                           <button 
                             onClick={() => router.push(`/Expediente/Eliminar/${expediente.id}`)}
                             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
-                            >
+                          >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                             Eliminar
-                            </button>
+                          </button>
                         </div>
                       </div>
                     </div>

@@ -261,7 +261,12 @@ export default function Usuarios() {
           Expedientes
         </button>
         <div className="border-l border-black h-6 mx-4"></div>
-        <button className="px-30 hover:text-white transition">Historial</button>
+        <button 
+          onClick={() => router.push("/Movimiento/Lista")}
+          className="px-30 hover:text-white transition"
+        >
+          Historial Movimientos
+        </button>
       </nav>
 
       {/* Contenido Principal */}
