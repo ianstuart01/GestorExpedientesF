@@ -23,7 +23,6 @@ export default function Home() {
       descripcion: "Expediente #2025-001 - Práctica Supervisada",
       usuario: "María González",
       tiempo: "Hace 5 min",
-      icono: "📄"
     },
     {
       id: 2,
@@ -32,7 +31,6 @@ export default function Home() {
       descripcion: "Nuevo usuario: Carlos Rodríguez",
       usuario: "Admin Sistema",
       tiempo: "Hace 15 min",
-      icono: "👤"
     },
     {
       id: 3,
@@ -41,7 +39,6 @@ export default function Home() {
       descripcion: "Expediente #2024-125 movido a Calidad",
       usuario: "Ana López",
       tiempo: "Hace 30 min",
-      icono: "🔄"
     },
     {
       id: 4,
@@ -50,7 +47,6 @@ export default function Home() {
       descripcion: "3 fojas agregadas a #2024-120",
       usuario: "Juan Pérez",
       tiempo: "Hace 1 hora",
-      icono: "📎"
     }
   ];
 
@@ -73,29 +69,31 @@ export default function Home() {
       {/* Header */}
       <header className="w-full bg-sky-200 shadow-md flex items-center justify-between h-[100px]">
         <div className="flex items-center h-full">
-          <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
+          
+          {/* Logo UTN primero */}
+          <div className="relative h-[55%] aspect-[3/2] flex items-center justify-center bg-sky-200 px-2 mr-2">
             <Image
-              src="/linsi-logo.png"
-              alt="Logo LINSI"
-              width={100}
-              height={100}
+              src="/utnlogo.png"
+              alt="Logo UTN La Plata"
+              fill
               className="object-contain"
               priority
             />
           </div>
-          <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
+
+          {/* Logo LINSI después, con el mismo estilo */}
+          <div className="relative h-[60%] aspect-[4/3] flex items-center justify-center bg-sky-200 px-2">
             <Image
-              src="/utn-logo.png"
-              alt="Logo UTN La Plata"
-              width={100}
-              height={120}
+              src="/linsilogo.png"
+              alt="Logo LINSI"
+              fill
               className="object-contain"
               priority
             />
           </div>
         </div>
 
-        <h1 className="text-center text-blue-900 font-bold text-lg leading-tight">
+        <h1 className="text-center text-blue-900 font-bold text-xl leading-tight">
           Gestor de Expedientes
           <span className="block text-gray-700 text-sm font-medium">
             Laboratorio de Innovaciones en Sistemas de Información
@@ -104,52 +102,44 @@ export default function Home() {
 
         <button
           onClick={handleLogout}
-          className="text-black font-semibold text-[14px] mr-6 hover:text-gray-700"
+          className="text-black font-semibold text-sm mr-6 px-5 py-2 rounded-xl transition-all duration-200 hover:bg-gray-100 hover:shadow-md active:translate-y-[1px]"
         >
-          Cerrar Sesión
+          Cerrar sesión
         </button>
+
+
       </header>
 
       {/* Navegación */}
-      <nav className="w-full bg-sky-400 text-black font-medium flex justify-center items-center py-3 shadow">
-        <button className="px-30 hover:text-white transition font-semibold text-white">
-          Inicio
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button 
-          onClick={() => router.push("/Usuario")}
-          className="px-30 hover:text-white transition"
-        >
-          Usuarios
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button 
-          onClick={() => router.push("/Expediente")}
-          className="px-30 hover:text-white transition"
-        >
-          Expedientes
-        </button>
-        <div className="border-l border-black h-6 mx-4"></div>
-        <button 
-          onClick={() => router.push("/Movimiento/Lista")}
-          className="px-30 hover:text-white transition"
-        >
-          Historial Movimientos
-        </button>
-      </nav>
+        <nav className="w-full flex justify-center items-center py-3 shadow mb-6 font-semibold" style={{ backgroundColor: "#21BCEE" }}>
+          {[
+            { label: "Inicio" },
+            { label: "Usuarios", path: "/Usuario" },
+            { label: "Expedientes", path: "/Expediente" },
+            { label: "Historial Movimientos", path: "/Movimiento/Lista" },
+          ].map((item, index) => (
+            <React.Fragment key={item.path}>
+              <button
+                onClick={() => {
+                  if (router.pathname !== item.path) {
+                    router.push(item.path);
+                  }
+                }}
+                className={`px-15 transition-all duration-200 text-blue-900 hover:text-white hover:scale-[1.05]
+                  ${router.pathname === item.path ? "text-white scale-[1.07]" : ""}`}
+              >
+                {item.label}
+              </button>
+
+              {/* divisor excepto después del último */}
+              {index < 3 && <div className="border-l h-6 mx-6" style={{ borderColor: "#116BF8" }}></div>}
+            </React.Fragment>
+          ))}
+        </nav>
 
       {/* Contenido Principal */}
       <section className="flex-1 p-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          {/* Bienvenida */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              ¡Bienvenido al Gestor de Expedientes!
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Sistema integral para la gestión y seguimiento de expedientes del Laboratorio LINSI
-            </p>
-          </div>
 
           {/* Métricas */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -157,25 +147,25 @@ export default function Home() {
               { 
                 titulo: "Expedientes Totales", 
                 valor: metricas.expedientesTotales, 
-                icono: "📊",
+                icono: "/chart.png",
                 descripcion: "Total en el sistema"
               },
               { 
                 titulo: "Expedientes Activos", 
                 valor: metricas.expedientesActivos, 
-                icono: "✅",
+                icono: "/check.png",
                 descripcion: "En proceso actual"
               },
               { 
                 titulo: "Usuarios Registrados", 
                 valor: metricas.usuariosRegistrados, 
-                icono: "👥",
+                icono: "/users.png",
                 descripcion: "Usuarios activos"
               },
               { 
                 titulo: "Movimientos Hoy", 
                 valor: metricas.movimientosHoy, 
-                icono: "🔄",
+                icono: "/mov.png",
                 descripcion: "Actividad del día"
               }
             ].map((metrica, index) => (
@@ -189,7 +179,34 @@ export default function Home() {
                     <p className="text-3xl font-bold mt-2">{metrica.valor}</p>
                     <p className="text-xs opacity-80 mt-1">{metrica.descripcion}</p>
                   </div>
-                  <span className="text-3xl">{metrica.icono}</span>
+
+                  {metrica.titulo === "Expedientes Totales" ? (
+                    <img
+                      src="/chart.png"
+                      alt="Expedientes Totales"
+                      className="w-10 h-10 object-contain"
+                    />
+                  ) : metrica.titulo === "Expedientes Activos" ? (
+                    <img
+                      src="/check.png"
+                      alt="Expedientes Activos"
+                      className="w-10 h-10 object-contain"
+                    />
+                  ) : metrica.titulo === "Movimientos Hoy" ? (
+                    <img
+                      src="/mov.png"
+                      alt="Movimientos Hoy"
+                      className="w-10 h-10 object-contain"
+                    />
+                   ) : metrica.titulo === "Usuarios Registrados" ? (
+                    <img
+                      src="/users.png"
+                      alt="Usuarios Registrados"
+                      className="w-10 h-10 object-contain"
+                    />
+                  ) : (
+                    <span className="text-3xl">{metrica.icono}</span>
+                  )}
                 </div>
               </div>
             ))}
@@ -199,43 +216,59 @@ export default function Home() {
             {/* Accesos Rápidos */}
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <span>🚀</span> Accesos Rápidos
+                Acceso Rápido
               </h2>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => router.push("/Expediente")}
                   className="bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg p-4 text-center transition duration-200 group"
                 >
-                  <div className="text-2xl mb-2">📄</div>
+                  <img
+                    src="/search.png"
+                    alt="Nuevo Expediente"
+                    className="w-8 h-8 mx-auto mb-2 object-contain"
+                  />
                   <p className="font-semibold text-blue-800">Ver Expedientes</p>
                   <p className="text-xs text-blue-600 mt-1">Explorar todos</p>
                 </button>
 
                 <button
-                  onClick={() => router.push("/Expediente?crear=true")}
+                  onClick={() => router.push("/Expediente/Crear?crear=true")}
                   className="bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg p-4 text-center transition duration-200 group"
                 >
-                  <div className="text-2xl mb-2">➕</div>
+                  <img
+                    src="/plus2.png"
+                    alt="Nuevo Expediente"
+                    className="w-8 h-8 mx-auto mb-2 object-contain"
+                  />
                   <p className="font-semibold text-green-800">Nuevo Expediente</p>
                   <p className="text-xs text-green-600 mt-1">Crear uno nuevo</p>
                 </button>
 
                 <button
-                  onClick={() => router.push("/Usuarios")}
+                  onClick={() => router.push("/Usuario")}
                   className="bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg p-4 text-center transition duration-200 group"
                 >
-                  <div className="text-2xl mb-2">👥</div>
+                  <img
+                    src="/users2.png"
+                    alt="Nuevo Expediente"
+                    className="w-8 h-8 mx-auto mb-2 object-contain"
+                  />
                   <p className="font-semibold text-purple-800">Gestionar Usuarios</p>
                   <p className="text-xs text-purple-600 mt-1">Administrar acceso</p>
                 </button>
 
                 <button
-                  onClick={() => router.push("/Historial")}
+                  onClick={() => router.push("/Usuario/Nuevo")}
                   className="bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-lg p-4 text-center transition duration-200 group"
                 >
-                  <div className="text-2xl mb-2">📋</div>
-                  <p className="font-semibold text-orange-800">Ver Historial</p>
-                  <p className="text-xs text-orange-600 mt-1">Auditar movimientos</p>
+                  <img
+                    src="/adduser.png"
+                    alt="Nuevo Expediente"
+                    className="w-8 h-8 mx-auto mb-2 object-contain"
+                  />
+                  <p className="font-semibold text-orange-800">Nuevo Usuario</p>
+                  <p className="text-xs text-orange-600 mt-1">Agregar uno nuevo</p>
                 </button>
               </div>
             </div>
@@ -243,36 +276,66 @@ export default function Home() {
             {/* Actividad Reciente */}
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <span>🔥</span> Actividad Reciente
+                Actividad Reciente
               </h2>
+
               <div className="space-y-4">
-                {actividadReciente.map((actividad) => (
-                  <div
-                    key={actividad.id}
-                    className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200"
-                  >
-                    <span className="text-xl">{actividad.icono}</span>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">
-                        {actividad.descripcion}
-                      </p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                        <span>Por {actividad.usuario}</span>
-                        <span>•</span>
-                        <span>{actividad.tiempo}</span>
+                {actividadReciente.map((actividad) => {
+                  // Selecciona el ícono según el tipo
+                  let iconSrc = "";
+                  switch (actividad.tipo) {
+                    case "expediente":
+                      iconSrc = "/file.png";
+                      break;
+                    case "usuario":
+                      iconSrc = "/usersolo.png";
+                      break;
+                    case "movimiento":
+                      iconSrc = "/mov2.png";
+                      break;
+                    case "documento":
+                      iconSrc = "/clip.png";
+                  }
+
+                  return (
+                    <div
+                      key={actividad.id}
+                      className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200"
+                    >
+                      <img
+                        src={iconSrc}
+                        alt={actividad.tipo}
+                        width={28}
+                        height={28}
+                        className="object-contain"
+                      />
+
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900">
+                          {actividad.descripcion}
+                        </p>
+                        <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                          <span>Por {actividad.usuario}</span>
+                          <span>•</span>
+                          <span>{actividad.tiempo}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-              <button className="w-full mt-4 text-center text-blue-600 hover:text-blue-800 font-medium text-sm py-2">
+
+              <button
+                onClick={() => router.push("/Movimiento/Lista")}
+                className="w-full mt-4 text-center text-blue-600 font-medium text-sm py-2 rounded-lg border border-transparent hover:border-blue-600 hover:bg-blue-50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm hover:shadow-md"
+              >
                 Ver toda la actividad →
               </button>
             </div>
           </div>
 
           {/* Información del Sistema */}
-          <div className="mt-8 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl shadow-lg p-6 text-white">
+          <div className="mt-8 rounded-xl shadow-lg p-6 text-white" style={{ backgroundColor: "#37A8CF" }}>
             <div className="text-center">
               <h3 className="text-xl font-bold mb-2">Sistema de Gestión LINSI</h3>
               <p className="opacity-90 max-w-2xl mx-auto">
@@ -280,10 +343,22 @@ export default function Home() {
                 de expedientes dentro del Laboratorio de Innovaciones en Sistemas de Información
               </p>
               <div className="flex justify-center gap-6 mt-4 text-sm opacity-80">
-                <span>🛡️ Seguro</span>
-                <span>⚡ Rápido</span>
-                <span>🔍 Auditado</span>
-                <span>📈 Escalable</span>
+                <div className="flex items-center gap-2">
+                  <Image src="/shield.png" alt="Seguro" width={20} height={20} className="object-contain" />
+                  <span>Seguro</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Image src="/rayo.png" alt="Rápido" width={20} height={20} className="object-contain" />
+                  <span>Rápido</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Image src="/lupa.png" alt="Auditado" width={20} height={20} className="object-contain" />
+                  <span>Auditado</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Image src="/plane.png" alt="Escalable" width={20} height={20} className="object-contain" />
+                  <span>Escalable</span>
+                </div>
               </div>
             </div>
           </div>
