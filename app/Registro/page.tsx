@@ -32,44 +32,6 @@ export default function Register() {
 
   return (
     <main className="min-h-screen flex flex-col bg-cyan-100">
-      {/* 🔹 Encabezado a todo el ancho con logos alineados */}
-      <header className="w-full bg-sky-200 shadow-md flex items-center justify-between h-[100px]">
-        <div className="flex items-center h-full">
-                  <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
-                    <Image
-                      src="/linsi-logo.png"
-                      alt="Logo LINSI"
-                      width={100}
-                      height={120}
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                  <div className="h-full w-[100px] flex items-center justify-center bg-sky-200">
-                    <Image
-                      src="/utn-logo.png"
-                      alt="Logo UTN La Plata"
-                      width={100}
-                      height={120}
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                </div>
-
-                <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
-                    <h1 className="text-blue-900 font-bold text-lg leading-tight">
-                    Gestor de Expedientes
-                    </h1>
-                    <span className="block text-gray-700 text-sm font-medium">
-                    Laboratorio de Innovaciones en Sistemas de Información
-                    </span>
-                </div>
-
-        {/* Franja azul a la derecha para completar el ancho */}
-        <div className="flex-1 h-[100px] bg-[url('/header-bg.png')] bg-cover bg-center ml-6"></div>
-      </header>
-
       {/* 🔹 Contenedor del formulario */}
       <section className="flex flex-1 justify-center items-start py-8">
         <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-gray-200 p-8 mt-8">
@@ -217,7 +179,7 @@ export default function Register() {
             {/* Botones */}
             <div className="col-span-2 flex justify-between mt-4">
               <Link
-                href="/"
+                href="/login"
                 className="bg-gray-300 text-black px-6 py-2 rounded hover:bg-gray-400"
               >
                 Volver
