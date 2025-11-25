@@ -6,7 +6,7 @@ export default function Home() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = (e) => {
+    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('--- INTENTO DE INICIO DE SESIÓN ---');
         console.log(`Email: ${email}`);
