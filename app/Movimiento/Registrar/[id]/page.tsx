@@ -156,7 +156,7 @@ export default function RegistrarMovimiento() {
       console.error("Error al registrar movimiento:", error);
       alert("Error al registrar el movimiento");
     } finally {
-      setEliminando(false);
+      setEnviando(false);
     }
   };
 
@@ -234,7 +234,7 @@ export default function RegistrarMovimiento() {
 
           {/* Formulario */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+            <div className="bg-linear-to-r from-green-600 to-green-700 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Nuevo Movimiento</h2>
             </div>
 
