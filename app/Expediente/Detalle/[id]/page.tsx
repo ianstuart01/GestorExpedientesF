@@ -7,7 +7,7 @@ import { useRouter, useParams } from "next/navigation";
 const expedientesEjemplo = [
   {
     id: "001",
-    numero: "001",
+    numero: "0034-2025-00",
     tema: "Práctica Supervisada",
     fecha: "15/10/2025",
     observacion: "Laboratorio LINSI - Desarrollo Web",
@@ -15,13 +15,23 @@ const expedientesEjemplo = [
     estado: "Activo",
     subTema: "Desarrollo Frontend",
     fechaAlta: "2025-10-15",
-    alcance: "Interno",
     caratula: "Sistema de Gestión de Expedientes Digitales para el Laboratorio LINSI",
-    observaciones: "Expediente de práctica supervisada para el laboratorio LINSI. El proyecto consiste en desarrollar un sistema web moderno para la gestión de expedientes académicos utilizando tecnologías como Next.js, React y Tailwind CSS."
+    observaciones: "Expediente de práctica supervisada para el laboratorio LINSI. El proyecto consiste en desarrollar un sistema web moderno para la gestión de expedientes académicos utilizando tecnologías como Next.js, React y Tailwind CSS.",
+    sector: "Desarrollo",
+    fojas: [
+      { id: "1", nombre: "Documentación técnica.pdf", fecha: "2025-10-15" },
+      { id: "2", nombre: "Plan de trabajo.docx", fecha: "2025-10-16" },
+      { id: "3", nombre: "Requerimientos funcionales.pdf", fecha: "2025-10-17" }
+    ],
+    movimientos: [
+      { id: "1", fecha: "2025-10-15", descripcion: "Creación del expediente", sectorOrigen: "-", sectorDestino: "Desarrollo", usuario: "Juan Pérez" },
+      { id: "2", fecha: "2025-10-18", descripcion: "Revisión inicial de documentación", sectorOrigen: "Desarrollo", sectorDestino: "Calidad", usuario: "Ana Martínez" },
+      { id: "3", fecha: "2025-10-20", descripcion: "Aprobación de requerimientos", sectorOrigen: "Calidad", sectorDestino: "Desarrollo", usuario: "Carlos Rodríguez" }
+    ]
   },
   {
-    id: "002", 
-    numero: "002",
+    id: "002",
+    numero: "0035-2025-00", 
     tema: "Tesis de Grado",
     fecha: "12/10/2025",
     observacion: "Sistema de Gestión Académica",
@@ -29,9 +39,44 @@ const expedientesEjemplo = [
     estado: "En revisión",
     subTema: "Base de Datos",
     fechaAlta: "2025-10-12",
-    alcance: "Externo",
     caratula: "Plataforma Educativa Integral para Instituciones Terciarias",
-    observaciones: "Tesis de grado sobre sistemas de gestión académica. Investigación y desarrollo de una plataforma que integre gestión de alumnos, materias, horarios y calificaciones para instituciones de educación superior."
+    observaciones: "Tesis de grado sobre sistemas de gestión académica. Investigación y desarrollo de una plataforma que integre gestión de alumnos, materias, horarios y calificaciones para instituciones de educación superior.",
+    sector: "Investigación",
+    fojas: [
+      { id: "1", nombre: "Anteproyecto.pdf", fecha: "2025-10-12" },
+      { id: "2", nombre: "Estado del arte.docx", fecha: "2025-10-14" }
+    ],
+    movimientos: [
+      { id: "1", fecha: "2025-10-12", descripcion: "Creación del expediente", sectorOrigen: "-", sectorDestino: "Investigación", usuario: "María González" },
+      { id: "2", fecha: "2025-10-16", descripcion: "Revisión de anteproyecto", sectorOrigen: "Investigación", sectorDestino: "Calidad", usuario: "Laura Fernández" }
+    ]
+  },
+  {
+    id: "003",
+    numero: "0036-2025-01",
+    tema: "Proyecto Final",
+    fecha: "10/10/2025",
+    observacion: "Sistema de Gestión Documental Cloud",
+    usuario: "Carlos López",
+    estado: "Completado",
+    subTema: "Backend Development",
+    fechaAlta: "2025-10-10",
+    caratula: "Plataforma de Gestión Documental en la Nube para PyMEs",
+    observaciones: "Desarrollo de una plataforma cloud para gestión documental orientada a pequeñas y medianas empresas. Incluye módulos de digitalización, almacenamiento seguro y flujos de trabajo colaborativos.",
+    sector: "Desarrollo",
+    fojas: [
+      { id: "1", nombre: "Propuesta técnica.pdf", fecha: "2025-10-10" },
+      { id: "2", nombre: "Arquitectura del sistema.docx", fecha: "2025-10-11" },
+      { id: "3", nombre: "Manual de usuario.pdf", fecha: "2025-10-25" },
+      { id: "4", nombre: "Certificado de calidad.pdf", fecha: "2025-10-28" }
+    ],
+    movimientos: [
+      { id: "1", fecha: "2025-10-10", descripcion: "Creación del expediente", sectorOrigen: "-", sectorDestino: "Desarrollo", usuario: "Carlos López" },
+      { id: "2", fecha: "2025-10-15", descripcion: "Revisión de arquitectura", sectorOrigen: "Desarrollo", sectorDestino: "Calidad", usuario: "Pedro Sánchez" },
+      { id: "3", fecha: "2025-10-18", descripcion: "Correcciones de diseño", sectorOrigen: "Calidad", sectorDestino: "Desarrollo", usuario: "Carlos López" },
+      { id: "4", fecha: "2025-10-22", descripcion: "Pruebas de integración", sectorOrigen: "Desarrollo", sectorDestino: "Calidad", usuario: "Ana Martínez" },
+      { id: "5", fecha: "2025-10-26", descripcion: "Aprobación final", sectorOrigen: "Calidad", sectorDestino: "Archivo", usuario: "Laura Fernández" }
+    ]
   }
 ];
 
@@ -44,11 +89,9 @@ export default function DetalleExpediente() {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    // Simular carga de datos desde API
     const cargarExpediente = async () => {
       setCargando(true);
       
-      // Simular delay de API
       await new Promise(resolve => setTimeout(resolve, 500));
       
       const expedienteEncontrado = expedientesEjemplo.find(exp => exp.id === id);
@@ -74,15 +117,6 @@ export default function DetalleExpediente() {
     router.push(`/Expediente/Editar/${id}`);
   };
 
-  // 
-  const handleMovimientoClick = () => {
-    router.push(`/Movimiento/Registrar/${id}`);
-  };
-
-  const handleLogout = () => {
-    window.location.href = "/";
-  };
-
   const getEstadoColor = (estado: string) => {
     switch (estado) {
       case "Activo":
@@ -96,10 +130,19 @@ export default function DetalleExpediente() {
     }
   };
 
+  const getAlcanceInfo = (numero: string) => {
+    const partes = numero.split('-');
+    const alcance = parseInt(partes[2]);
+    return {
+      numeroBase: `${partes[0]}-${partes[1]}`,
+      alcance,
+      esInicial: alcance === 0
+    };
+  };
+
   if (cargando) {
     return (
       <main className="min-h-screen flex flex-col bg-cyan-50">
-        
         <section className="flex-1 p-6 bg-cyan-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -128,9 +171,10 @@ export default function DetalleExpediente() {
     );
   }
 
+  const alcanceInfo = getAlcanceInfo(expediente.numero);
+
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">
-
       {/* Contenido Principal */}
       <section className="flex-1 p-6 bg-cyan-50">
         <div className="max-w-4xl mx-auto">
@@ -138,12 +182,19 @@ export default function DetalleExpediente() {
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
               <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    Expediente #{expediente.numero}
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                  <h1 className="text-2xl font-bold text-gray-900 font-mono">
+                    {expediente.numero}
                   </h1>
                   <span className={`text-sm font-medium px-3 py-1 rounded-full border ${getEstadoColor(expediente.estado)}`}>
                     {expediente.estado}
+                  </span>
+                  <span className={`text-sm font-medium px-3 py-1 rounded-full border ${
+                    alcanceInfo.esInicial 
+                      ? "bg-gray-100 text-gray-800 border-gray-200" 
+                      : "bg-blue-100 text-blue-800 border-blue-200"
+                  }`}>
+                    Alcance: {alcanceInfo.alcance}
                   </span>
                 </div>
                 <p className="text-gray-600">Detalle completo del expediente</p>
@@ -155,9 +206,8 @@ export default function DetalleExpediente() {
                 >
                   Volver
                 </button>
-                {/* ✅ BOTÓN REGISTRAR MOVIMIENTO AGREGADO */}
                 <button
-                  onClick={handleMovimientoClick}
+                  onClick={() => router.push(`/Movimiento/Registrar/${id}`)}
                   className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium flex items-center gap-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,7 +235,7 @@ export default function DetalleExpediente() {
                     <div className="space-y-3">
                       <div>
                         <span className="text-gray-900 font-semibold">Número:</span>
-                        <p className="text-gray-600">#{expediente.numero}</p>
+                        <p className="text-gray-600 font-mono">{expediente.numero}</p>
                       </div>
                       <div>
                         <span className="text-gray-900 font-semibold">Tema:</span>
@@ -198,6 +248,10 @@ export default function DetalleExpediente() {
                       <div>
                         <span className="text-gray-900 font-semibold">Usuario:</span>
                         <p className="text-gray-600">{expediente.usuario}</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-900 font-semibold">Sector:</span>
+                        <p className="text-gray-600">{expediente.sector}</p>
                       </div>
                     </div>
                   </div>
@@ -220,43 +274,60 @@ export default function DetalleExpediente() {
                           {expediente.estado}
                         </span>
                       </div>
+                      <div>
+                        <span className="text-gray-900 font-semibold">Nivel de Alcance:</span>
+                        <span className={`text-sm font-medium px-2 py-1 rounded-full ${
+                          alcanceInfo.esInicial 
+                            ? "bg-gray-100 text-gray-800 border-gray-200" 
+                            : "bg-blue-100 text-blue-800 border-blue-200"
+                        }`}>
+                          {alcanceInfo.esInicial ? "Inicial (00)" : `Avanzado (${alcanceInfo.alcance.toString().padStart(2, '0')})`}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Columna derecha */}
                 <div className="space-y-6">
-                  {/* Alcance y carátula */}
+                  {/* Carátula */}
                   <div>
-                    <h3 className="text-lg font-semibold text-blue-900 mb-4 pb-2 border-b border-blue-200">Alcance y Carátula</h3>
-                    <div className="space-y-3">
-                      <div>
-                        <span className="text-gray-900 font-semibold">Alcance:</span>
-                        <p className="text-gray-600">{expediente.alcance || "No especificado"}</p>
-                      </div>
-                      <div>
-                        <span className="text-gray-900 font-semibold">Carátula:</span>
-                        <p className="text-gray-600">{expediente.caratula}</p>
-                      </div>
+                    <h3 className="text-lg font-semibold text-blue-900 mb-4 pb-2 border-b border-blue-200">Carátula</h3>
+                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                      <p className="text-gray-600">{expediente.caratula}</p>
                     </div>
                   </div>
 
                   {/* Observaciones */}
                   <div>
                     <h3 className="text-lg font-semibold text-blue-900 mb-4 pb-2 border-b border-blue-200">Observaciones</h3>
-                    <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                       <p className="text-gray-600 whitespace-pre-line">
                         {expediente.observaciones || "No hay observaciones registradas."}
                       </p>
                     </div>
                   </div>
 
-                  {/* Observación breve */}
+                  {/* Fojas adjuntas */}
                   <div>
-                    <h3 className="text-lg font-semibold text-blue-900 mb-4 pb-2 border-b border-blue-200">Resumen</h3>
-                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                      <p className="text-gray-600">{expediente.observacion}</p>
-                    </div>
+                    <h3 className="text-lg font-semibold text-blue-900 mb-4 pb-2 border-b border-blue-200">Fojas Adjuntas ({expediente.fojas.length})</h3>
+                    {expediente.fojas.length > 0 ? (
+                      <div className="space-y-2">
+                        {expediente.fojas.map((foja: any) => (
+                          <div key={foja.id} className="flex items-center justify-between bg-gray-50 p-3 rounded border">
+                            <div>
+                              <span className="text-sm font-medium text-gray-900">{foja.nombre}</span>
+                              <p className="text-sm text-gray-500">{foja.fecha}</p>
+                            </div>
+                            <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                              Descargar
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500 text-sm">No hay fojas adjuntas</p>
+                    )}
                   </div>
                 </div>
               </div>

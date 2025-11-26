@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-// Datos de ejemplo para los expedientes
+// Datos de ejemplo para los expedientes con nuevo formato
 const expedientesEjemplo = [
   {
     id: "001",
-    numero: "001",
+    numero: "0034-2025-00",
     tema: "Práctica Supervisada",
     fecha: "15/10/2025",
     observacion: "Laboratorio LINSI - Desarrollo Web",
@@ -15,12 +15,12 @@ const expedientesEjemplo = [
     estado: "Activo",
     subTema: "Desarrollo Frontend",
     fechaAlta: "2025-10-15",
-    alcance: "Interno",
-    caratula: "Sistema de Gestión de Expedientes"
+    caratula: "Sistema de Gestión de Expedientes",
+    sector: "Desarrollo"
   },
   {
     id: "002",
-    numero: "002",
+    numero: "0035-2025-00", 
     tema: "Tesis de Grado",
     fecha: "12/10/2025",
     observacion: "Sistema de Gestión Académica",
@@ -28,8 +28,21 @@ const expedientesEjemplo = [
     estado: "En revisión",
     subTema: "Base de Datos",
     fechaAlta: "2025-10-12",
-    alcance: "Externo",
-    caratula: "Plataforma Educativa Integral"
+    caratula: "Plataforma Educativa Integral",
+    sector: "Investigación"
+  },
+  {
+    id: "003",
+    numero: "0036-2025-01",
+    tema: "Proyecto Final",
+    fecha: "10/10/2025",
+    observacion: "Sistema de Gestión Documental",
+    usuario: "Carlos López",
+    estado: "Completado",
+    subTema: "Backend Development",
+    fechaAlta: "2025-10-10",
+    caratula: "Plataforma de Gestión Documental Cloud",
+    sector: "Desarrollo"
   }
 ];
 
@@ -42,34 +55,18 @@ export default function Expedientes() {
   const [expedienteAEliminar, setExpedienteAEliminar] = useState<any>(null);
 
   const handleEditar = (expediente: any) => {
-    // Navegar a la página de edición con los datos del expediente
     router.push(`/Expediente/Editar/${expediente.id}`);
   };
 
   const handleEliminarClick = (expediente: any) => {
-    setExpedienteAEliminar(expediente);
-    setMostrarModalEliminar(true);
-  };
-
-  // ✅ FUNCIÓN: Manejar clic en botón Movimientos
-  const handleMovimientoClick = (expediente: any) => {
-    router.push(`/Movimiento/Registro/${expediente.id}`);
-  };
-
-  // ✅ NUEVA FUNCIÓN: Ver lista de movimientos global
-  const handleVerListaMovimientos = () => {
-    router.push("/Movimiento/Lista");
+    router.push(`/Expediente/Eliminar/${expediente.id}`);
   };
 
   const confirmarEliminar = () => {
     if (expedienteAEliminar) {
-      // Simular eliminación
       const nuevosExpedientes = expedientes.filter(exp => exp.id !== expedienteAEliminar.id);
       setExpedientes(nuevosExpedientes);
-      
-      // Aquí iría la llamada al endpoint del backend
       console.log("Eliminando expediente:", expedienteAEliminar.id);
-      
       alert(`Expediente ${expedienteAEliminar.numero} eliminado exitosamente`);
     }
     setMostrarModalEliminar(false);
@@ -81,15 +78,11 @@ export default function Expedientes() {
     setExpedienteAEliminar(null);
   };
 
-  const handleVerDetalle = (expediente: any) => {
-    // Podrías crear una página de detalle o mostrar un modal
-    alert(`Detalle del expediente:\nNúmero: ${expediente.numero}\nTema: ${expediente.tema}\nUsuario: ${expediente.usuario}\nEstado: ${expediente.estado}`);
-  };
-
   const filtrarExpedientes = expedientes.filter(expediente => {
     const coincideBusqueda = expediente.usuario.toLowerCase().includes(busqueda.toLowerCase()) ||
                             expediente.tema.toLowerCase().includes(busqueda.toLowerCase()) ||
-                            expediente.numero.includes(busqueda);
+                            expediente.numero.includes(busqueda) ||
+                            expediente.sector.toLowerCase().includes(busqueda.toLowerCase());
     
     const coincideEstado = filtroEstado === "todos" || expediente.estado === filtroEstado;
     
@@ -109,10 +102,16 @@ export default function Expedientes() {
     }
   };
 
+  const getAlcanceColor = (numero: string) => {
+    const alcance = parseInt(numero.split('-')[2]);
+    if (alcance === 0) return "bg-gray-100 text-gray-800 border-gray-200";
+    if (alcance <= 2) return "bg-green-100 text-green-800 border-green-200";
+    if (alcance <= 5) return "bg-yellow-100 text-yellow-800 border-yellow-200";
+    return "bg-red-100 text-red-800 border-red-200";
+  };
+
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">
- 
-
       {/* Contenido Principal */}
       <section className="flex-1 p-6 bg-cyan-50">
         <div className="max-w-7xl mx-auto">
@@ -123,13 +122,13 @@ export default function Expedientes() {
                 {/* Buscador */}
                 <div className="flex-1">
                   <label htmlFor="buscar" className="block text-sm font-medium text-gray-900 mb-2">
-                    Buscar por usuario o tema
+                    Buscar por número, usuario, tema o sector
                   </label>
                   <div className="relative">
                     <input
                       type="text"
                       id="buscar"
-                      placeholder="Nombre, apellido o tema..."
+                      placeholder="Número, nombre, tema o sector..."
                       value={busqueda}
                       onChange={(e) => setBusqueda(e.target.value)}
                       className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
@@ -206,12 +205,18 @@ export default function Expedientes() {
                     >
                       <div className="flex flex-col md:flex-row md:items-center justify-between">
                         <div className="flex-1">
-                          <div className="flex items-center gap-4 mb-2">
-                            <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
-                              #{expediente.numero}
+                          <div className="flex items-center gap-3 mb-2 flex-wrap">
+                            <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full font-mono">
+                              {expediente.numero}
                             </span>
                             <span className={`text-xs font-medium px-2 py-1 rounded-full border ${getEstadoColor(expediente.estado)}`}>
                               {expediente.estado}
+                            </span>
+                            <span className={`text-xs font-medium px-2 py-1 rounded-full border ${getAlcanceColor(expediente.numero)}`}>
+                              Alcance: {expediente.numero.split('-')[2]}
+                            </span>
+                            <span className="text-xs font-medium px-2 py-1 rounded-full border bg-purple-100 text-purple-800 border-purple-200">
+                              {expediente.sector}
                             </span>
                           </div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-1">
@@ -242,10 +247,9 @@ export default function Expedientes() {
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            Ver Detalle
+                            Detalle
                           </button>
                           
-                          {/* ✅ BOTÓN VER MOVIMIENTOS DEL EXPEDIENTE */}
                           <button 
                             onClick={() => router.push(`/Movimiento/Lista/${expediente.id}`)}
                             className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
@@ -253,7 +257,7 @@ export default function Expedientes() {
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
-                            Ver Movimientos
+                            Movimientos
                           </button>
                           
                           <button 
@@ -266,7 +270,7 @@ export default function Expedientes() {
                             Editar
                           </button>
                           <button 
-                            onClick={() => router.push(`/Expediente/Eliminar/${expediente.id}`)}
+                            onClick={() => handleEliminarClick(expediente)}
                             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-1"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,43 +288,6 @@ export default function Expedientes() {
           </div>
         </div>
       </section>
-
-      {/* Modal de Confirmación para Eliminar */}
-      {mostrarModalEliminar && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-shrink-0">
-                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                Confirmar Eliminación
-              </h3>
-            </div>
-            
-            <p className="text-gray-600 mb-6">
-              ¿Estás seguro de que deseas eliminar el expediente <strong>#{expedienteAEliminar?.numero}</strong> - {expedienteAEliminar?.tema}? Esta acción no se puede deshacer.
-            </p>
-            
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={cancelarEliminar}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={confirmarEliminar}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </main>
   );
 }
