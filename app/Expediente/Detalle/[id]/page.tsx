@@ -221,7 +221,7 @@ export default function DetalleExpediente() {
 
           {/* Información del expediente */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+            <div className="bg-linear-to-r from-blue-600 to-blue-700 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Información del Expediente</h2>
             </div>
 

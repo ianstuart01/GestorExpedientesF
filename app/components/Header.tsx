@@ -12,7 +12,7 @@ export default function Header() {
       <div className="flex items-center h-full">
         
         {/* Logo UTN primero */}
-        <div className="relative h-[55%] aspect-[3/2] flex items-center justify-center bg-sky-200 px-2 mr-2">
+        <div className="relative h-[55%] aspect-3/2 flex items-center justify-center bg-sky-200 px-2 mr-2">
           <Image
             src="/utnlogo.png"
             alt="Logo UTN La Plata"
@@ -23,7 +23,7 @@ export default function Header() {
         </div>
 
         {/* Logo LINSI */}
-        <div className="relative h-[60%] aspect-[4/3] flex items-center justify-center bg-sky-200 px-2">
+        <div className="relative h-[60%] aspect-4/3 flex items-center justify-center bg-sky-200 px-2">
           <Image
             src="/linsilogo.png"
             alt="Logo LINSI"
@@ -43,7 +43,7 @@ export default function Header() {
 
       <button
         onClick={handleLogout}
-        className="text-black font-semibold text-sm mr-6 px-5 py-2 rounded-xl transition-all duration-200 hover:bg-gray-100 hover:shadow-md active:translate-y-[1px]"
+        className="text-black font-semibold text-sm mr-6 px-5 py-2 rounded-xl transition-all duration-200 hover:bg-gray-100 hover:shadow-md active:translate-y-px"
       >
         Cerrar sesión
       </button>
