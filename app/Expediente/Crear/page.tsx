@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 // Datos de ejemplo para sectores
 const sectoresEjemplo = [
@@ -13,6 +14,8 @@ const sectoresEjemplo = [
 
 export default function CrearExpediente() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const vieneDeInicio = searchParams.get("inicio") === "true";
   const [formData, setFormData] = useState({
     usuario: "",
     tema: "",
@@ -97,8 +100,13 @@ export default function CrearExpediente() {
   };
 
   const handleVolver = () => {
-    router.push("/Expediente");
+    if (vieneDeInicio) {
+      router.push("/Inicio");
+    } else {
+      router.push("/Expediente");
+    }
   };
+
 
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">

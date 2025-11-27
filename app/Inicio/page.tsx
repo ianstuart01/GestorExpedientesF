@@ -163,7 +163,7 @@ export default function Home() {
                 </button>
 
                 <button
-                  onClick={() => router.push("/Expediente/Crear?crear=true")}
+                  onClick={() => router.push("/Expediente/Crear?inicio=true")}
                   className="bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg p-4 text-center transition duration-200 group"
                 >
                   <img
