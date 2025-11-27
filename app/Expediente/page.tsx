@@ -117,8 +117,8 @@ export default function Expedientes() {
         <div className="max-w-7xl mx-auto">
           {/* Barra de búsqueda y filtros */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              <div className="flex flex-col md:flex-row gap-4 flex-1 w-full">
+            <div className="flex flex-col md:flex-row md:items-end gap-4 justify-between">
+               <div className="flex flex-col md:flex-row md:items-end gap-4 flex-1 w-full">
                 {/* Buscador */}
                 <div className="flex-1">
                   <label htmlFor="buscar" className="block text-sm font-medium text-gray-900 mb-2">
