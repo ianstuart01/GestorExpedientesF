@@ -22,7 +22,7 @@ export default function Home() {
         <main className="min-h-screen flex flex-col bg-cyan-50">
 
             {/* Contenido del Login - Centrado */}
-            <section className="flex-1 flex items-center justify-center p-6 bg-cyan-50">
+            <section className="flex flex-1 justify-center items-start p-6 pt-[10vh] bg-cyan-50">
                 <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 space-y-6 border border-gray-200">
                     
                     {/* Encabezado del Formulario */}
@@ -89,7 +89,7 @@ export default function Home() {
                         <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition duration-150">
                             ¿Olvidaste tu contraseña?
                         </a>
-                        <a href="/Registro" className="font-medium text-gray-600 hover:text-gray-700 transition duration-150">
+                        <a href="/Registro" className="font-medium text-blue-600 hover:text-gray-700 transition duration-150">
                             ¿Crear una cuenta?
                         </a>
                     </div>

@@ -301,7 +301,7 @@ export default function ListaMovimientos() {
           {/* Lista de Movimientos */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Header de la tabla */}
-            <div className="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
+            <div className="bg-linear-to-r from-purple-600 to-purple-700 px-6 py-4">
               <h2 className="text-xl font-bold text-white text-center">
                 Todos los Movimientos ({movimientosFiltrados.length})
               </h2>
