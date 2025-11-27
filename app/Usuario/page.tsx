@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-
 const usuariosEjemplo = [
   {
     id: "1",
@@ -12,7 +11,6 @@ const usuariosEjemplo = [
     email: "usuario1@ejemplo.com",
     sector: ["Desarrollo"],
     rol: "Administrador",
-    estado: "Activo",
     fechaCreacion: "2025-01-15",
     documento: "30.123.456"
   },
@@ -23,7 +21,6 @@ const usuariosEjemplo = [
     email: "usuario2@ejemplo.com",
     sector: ["Diseño", "Calidad"],
     rol: "Usuario",
-    estado: "Activo",
     fechaCreacion: "2025-02-20",
     documento: "30.234.567"
   },
@@ -34,7 +31,6 @@ const usuariosEjemplo = [
     email: "usuario3@ejemplo.com",
     sector: ["Calidad"],
     rol: "Usuario",
-    estado: "Inactivo",
     fechaCreacion: "2025-01-10",
     documento: "30.345.678"
   },
@@ -45,7 +41,6 @@ const usuariosEjemplo = [
     email: "usuario4@ejemplo.com",
     sector: ["Desarrollo", "Investigación"],
     rol: "Administrador",
-    estado: "Activo",
     fechaCreacion: "2025-03-05",
     documento: "30.456.789"
   }
@@ -99,9 +94,9 @@ export default function Usuarios() {
   const [busqueda, setBusqueda] = useState("");
   const [busquedaAgregar, setBusquedaAgregar] = useState("");
   const [filtroRol, setFiltroRol] = useState("todos");
-  const [filtroEstado, setFiltroEstado] = useState("todos");
   const [filtroSector, setFiltroSector] = useState("todos");
   const [mostrarAgregarUsuario, setMostrarAgregarUsuario] = useState(false);
+  const [desplegableAbierto, setDesplegableAbierto] = useState<string | null>(null);
 
   const handleEliminarClick = (usuario: any) => {
     router.push(`/Usuario/Eliminar/${usuario.id}`);
@@ -116,7 +111,6 @@ export default function Usuarios() {
     const nuevoUsuario = {
       ...usuario,
       rol: "Usuario", // Rol por defecto
-      estado: "Activo", // Estado por defecto
       fechaCreacion: new Date().toISOString().split('T')[0] // Fecha actual
     };
 
@@ -125,8 +119,13 @@ export default function Usuarios() {
     setMostrarAgregarUsuario(false); // Ocultar panel
   };
 
-  //Función para asignar/remover sectores a usuario
-  const handleAsignarSector = (usuarioId: string, sector: string) => {
+  //Función para alternar desplegable
+  const toggleDesplegable = (usuarioId: string) => {
+    setDesplegableAbierto(desplegableAbierto === usuarioId ? null : usuarioId);
+  };
+
+  //Función para manejar selección de sectores
+  const handleSeleccionarSector = (usuarioId: string, sector: string) => {
     setUsuarios(prevUsuarios => 
       prevUsuarios.map(usuario => {
         if (usuario.id === usuarioId) {
@@ -139,6 +138,17 @@ export default function Usuarios() {
         }
         return usuario;
       })
+    );
+  };
+
+  //Función para quitar un sector específico
+  const handleQuitarSector = (usuarioId: string, sector: string) => {
+    setUsuarios(prevUsuarios => 
+      prevUsuarios.map(usuario => 
+        usuario.id === usuarioId 
+          ? { ...usuario, sector: usuario.sector.filter(s => s !== sector) }
+          : usuario
+      )
     );
   };
 
@@ -161,10 +171,9 @@ export default function Usuarios() {
       usuario.sector.some(s => s.toLowerCase().includes(busqueda.toLowerCase()));
     
     const coincideRol = filtroRol === "todos" || usuario.rol === filtroRol;
-    const coincideEstado = filtroEstado === "todos" || usuario.estado === filtroEstado;
     const coincideSector = filtroSector === "todos" || usuario.sector.includes(filtroSector);
     
-    return coincideBusqueda && coincideRol && coincideEstado && coincideSector;
+    return coincideBusqueda && coincideRol && coincideSector;
   });
 
   //Filtrar usuarios disponibles para agregar
@@ -174,17 +183,6 @@ export default function Usuarios() {
      usuario.apellido.toLowerCase().includes(busquedaAgregar.toLowerCase()) ||
      usuario.documento.includes(busquedaAgregar))
   );
-
-  const getEstadoColor = (estado: string) => {
-    switch (estado) {
-      case "Activo":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "Inactivo":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
 
   const getRolColor = (rol: string) => {
     switch (rol) {
@@ -201,8 +199,6 @@ export default function Usuarios() {
 
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">
- 
-
       {/* Contenido Principal */}
       <section className="flex-1 p-6 bg-cyan-50">
         <div className="max-w-7xl mx-auto">
@@ -247,23 +243,6 @@ export default function Usuarios() {
                     {rolesDisponibles.map(rol => (
                       <option key={rol} value={rol}>{rol}</option>
                     ))}
-                  </select>
-                </div>
-
-                {/* Filtro por estado */}
-                <div className="w-full md:w-48">
-                  <label htmlFor="estado" className="block text-sm font-medium text-gray-900 mb-2">
-                    Filtrar por estado
-                  </label>
-                  <select
-                    id="estado"
-                    value={filtroEstado}
-                    onChange={(e) => setFiltroEstado(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                  >
-                    <option value="todos">Todos los estados</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
                   </select>
                 </div>
 
@@ -407,9 +386,6 @@ export default function Usuarios() {
                             <span className={`text-xs font-medium px-2 py-1 rounded-full border ${getRolColor(usuario.rol)}`}>
                               {usuario.rol}
                             </span>
-                            <span className={`text-xs font-medium px-2 py-1 rounded-full border ${getEstadoColor(usuario.estado)}`}>
-                              {usuario.estado}
-                            </span>
                           </div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-1">
                             {usuario.nombre} {usuario.apellido}
@@ -437,13 +413,13 @@ export default function Usuarios() {
                           </div>
 
                           {/* Gestión de roles y sectores */}
-                          <div className="mt-3 flex flex-wrap gap-2">
+                          <div className="mt-3 flex flex-col gap-3">
                             <div className="flex items-center gap-2">
                               <span className="text-xs font-medium text-gray-700">Cambiar rol:</span>
                               <select
                                 value={usuario.rol}
                                 onChange={(e) => handleCambiarRol(usuario.id, e.target.value)}
-                                className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 bg-gray-800 text-white" // ✅ Más oscuro
+                                className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 bg-gray-800 text-white"
                               >
                                 {rolesDisponibles.map(rol => (
                                   <option key={rol} value={rol}>{rol}</option>
@@ -451,22 +427,78 @@ export default function Usuarios() {
                               </select>
                             </div>
                             
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-col gap-2">
                               <span className="text-xs font-medium text-gray-700">Asignar sectores:</span>
-                              <div className="flex flex-wrap gap-1">
-                                {sectoresDisponibles.map(sector => (
+                              <div className="flex flex-col md:flex-row gap-3 items-start">
+                                {/* Desplegable de sectores */}
+                                <div className="relative">
                                   <button
-                                    key={sector}
-                                    onClick={() => handleAsignarSector(usuario.id, sector)}
-                                    className={`text-xs px-2 py-1 rounded border transition ${
-                                      usuario.sector.includes(sector)
-                                        ? "bg-blue-100 text-blue-800 border-blue-300"
-                                        : "bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200"
-                                    }`}
+                                    type="button"
+                                    onClick={() => toggleDesplegable(usuario.id)}
+                                    className="flex items-center gap-2 text-xs border border-gray-300 rounded px-3 py-2 bg-white hover:bg-gray-50 focus:ring-1 focus:ring-blue-500"
                                   >
-                                    {sector} {usuario.sector.includes(sector) ? "✓" : "+"}
+                                    <span>Seleccionar sectores</span>
+                                    <svg 
+                                      className={`w-4 h-4 transition-transform ${
+                                        desplegableAbierto === usuario.id ? 'rotate-180' : ''
+                                      }`} 
+                                      fill="none" 
+                                      stroke="currentColor" 
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
                                   </button>
-                                ))}
+
+                                  {/* Lista desplegable con checkboxes */}
+                                  {desplegableAbierto === usuario.id && (
+                                    <div className="absolute z-10 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                      <div className="p-2 space-y-1">
+                                        {sectoresDisponibles.map(sector => (
+                                          <label
+                                            key={sector}
+                                            className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded cursor-pointer"
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              checked={usuario.sector.includes(sector)}
+                                              onChange={() => handleSeleccionarSector(usuario.id, sector)}
+                                              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                            />
+                                            <span className="text-sm text-gray-700">{sector}</span>
+                                            {usuario.sector.includes(sector) && (
+                                              <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                              </svg>
+                                            )}
+                                          </label>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                {/* Sectores seleccionados */}
+                                <div className="flex flex-wrap gap-1">
+                                  {usuario.sector.map(sector => (
+                                    <div
+                                      key={sector}
+                                      className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs border border-blue-200"
+                                    >
+                                      <span>{sector}</span>
+                                      <button
+                                        onClick={() => handleQuitarSector(usuario.id, sector)}
+                                        className="text-blue-600 hover:text-blue-800 text-xs font-bold"
+                                        title="Quitar sector"
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  ))}
+                                  {usuario.sector.length === 0 && (
+                                    <span className="text-xs text-gray-500">No hay sectores seleccionados</span>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>

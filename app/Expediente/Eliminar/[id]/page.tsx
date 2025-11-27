@@ -7,7 +7,7 @@ import { useRouter, useParams } from "next/navigation";
 const expedientesEjemplo = [
   {
     id: "001",
-    numero: "001",
+    numero: "0034-2025-00",
     tema: "Práctica Supervisada",
     fecha: "15/10/2025",
     observacion: "Laboratorio LINSI - Desarrollo Web",
@@ -15,13 +15,13 @@ const expedientesEjemplo = [
     estado: "Activo",
     subTema: "Desarrollo Frontend",
     fechaAlta: "2025-10-15",
-    alcance: "Interno",
     caratula: "Sistema de Gestión de Expedientes",
-    observaciones: "Expediente de práctica supervisada para el laboratorio LINSI"
+    observaciones: "Expediente de práctica supervisada para el laboratorio LINSI",
+    sector: "Desarrollo"
   },
   {
-    id: "002", 
-    numero: "002",
+    id: "002",
+    numero: "0035-2025-00", 
     tema: "Tesis de Grado",
     fecha: "12/10/2025",
     observacion: "Sistema de Gestión Académica",
@@ -29,9 +29,9 @@ const expedientesEjemplo = [
     estado: "En revisión",
     subTema: "Base de Datos",
     fechaAlta: "2025-10-12",
-    alcance: "Externo",
     caratula: "Plataforma Educativa Integral",
-    observaciones: "Tesis de grado sobre sistemas de gestión académica"
+    observaciones: "Tesis de grado sobre sistemas de gestión académica",
+    sector: "Investigación"
   }
 ];
 
@@ -45,11 +45,9 @@ export default function EliminarExpediente() {
   const [eliminando, setEliminando] = useState(false);
 
   useEffect(() => {
-    // Simular carga de datos desde API
     const cargarExpediente = async () => {
       setCargando(true);
       
-      // Simular delay de API
       await new Promise(resolve => setTimeout(resolve, 500));
       
       const expedienteEncontrado = expedientesEjemplo.find(exp => exp.id === id);
@@ -79,7 +77,7 @@ export default function EliminarExpediente() {
       
       console.log("Expediente eliminado:", id);
       
-      alert(`Expediente #${expediente.numero} eliminado exitosamente`);
+      alert(`Expediente ${expediente.numero} eliminado exitosamente`);
       router.push("/Expediente");
       
     } catch (error) {
@@ -94,14 +92,9 @@ export default function EliminarExpediente() {
     router.push("/Expediente");
   };
 
-  const handleLogout = () => {
-    window.location.href = "/";
-  };
-
   if (cargando) {
     return (
       <main className="min-h-screen flex flex-col bg-cyan-50">
-        
         <section className="flex-1 p-6 bg-cyan-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -132,7 +125,6 @@ export default function EliminarExpediente() {
 
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">
-
       {/* Contenido Principal */}
       <section className="flex-1 p-6 bg-cyan-50">
         <div className="max-w-2xl mx-auto">
@@ -160,31 +152,35 @@ export default function EliminarExpediente() {
               </div>
 
               {/* Información del expediente a eliminar */}
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                 <h3 className="font-semibold text-red-800 mb-3">Expediente a eliminar:</h3>
                 <div className="space-y-2 text-sm">
-                    <div>
+                  <div>
                     <span className="text-gray-900 font-medium">Número: </span>
-                    <span className="text-gray-900 font-semibold">#{expediente.numero}</span>
-                    </div>
-                    <div>
+                    <span className="text-gray-900 font-semibold font-mono">{expediente.numero}</span>
+                  </div>
+                  <div>
                     <span className="text-gray-900 font-medium">Tema: </span>
                     <span className="text-gray-900 font-semibold">{expediente.tema}</span>
-                    </div>
-                    <div>
+                  </div>
+                  <div>
                     <span className="text-gray-900 font-medium">Usuario: </span>
                     <span className="text-gray-900 font-semibold">{expediente.usuario}</span>
-                    </div>
-                    <div>
+                  </div>
+                  <div>
                     <span className="text-gray-900 font-medium">Estado: </span>
                     <span className="text-gray-900 font-semibold">{expediente.estado}</span>
-                    </div>
-                    <div>
+                  </div>
+                  <div>
+                    <span className="text-gray-900 font-medium">Sector: </span>
+                    <span className="text-gray-900 font-semibold">{expediente.sector}</span>
+                  </div>
+                  <div>
                     <span className="text-gray-900 font-medium">Fecha Alta: </span>
-                    <span className="text-gray-900 font-semibold">{expediente.fecha}</span>
-                    </div>
+                    <span className="text-gray-900 font-semibold">{expediente.fechaAlta}</span>
+                  </div>
                 </div>
-                </div>
+              </div>
 
               {/* Botones de acción */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
