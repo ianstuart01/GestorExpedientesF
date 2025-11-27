@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import Dropzone from "./Dropzone";
 
 // Datos de ejemplo para sectores
 const sectoresEjemplo = [
@@ -276,17 +277,11 @@ export default function CrearExpediente() {
               <label className="block text-sm font-medium text-gray-900 mb-2">
                 Fojas (Documentos)
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                  className="w-full"
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                />
-                <p className="text-sm text-gray-500 mt-2">
-                  Puede seleccionar múltiples archivos
-                </p>
+              <Dropzone
+                onFilesSelected={(files) =>
+                  setFojas((prev) => [...prev, ...files])
+                }
+              />
                 
                 {/* Lista de archivos seleccionados */}
                 {fojas.length > 0 && (
@@ -311,7 +306,6 @@ export default function CrearExpediente() {
                   </div>
                 )}
               </div>
-            </div>
 
             {/* Botones */}
             <div className="flex flex-col sm:flex-row gap-4 justify-end pt-6 border-t border-gray-200">
