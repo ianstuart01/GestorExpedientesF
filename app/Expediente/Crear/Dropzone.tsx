@@ -1,12 +1,16 @@
 "use client";
 import React, { useState, useCallback, useRef } from "react";
 
-export default function Dropzone({ onFilesSelected }) {
+interface DropzoneProps {
+  onFilesSelected: (files: File[]) => void;
+}
+
+export default function Dropzone({ onFilesSelected }: DropzoneProps) {
   const [dragging, setDragging] = useState(false);
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleDrop = useCallback(
-    (e) => {
+    (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       setDragging(false);
       const files = Array.from(e.dataTransfer.files);
@@ -15,7 +19,7 @@ export default function Dropzone({ onFilesSelected }) {
     [onFilesSelected]
   );
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragging(true);
   };
@@ -28,8 +32,8 @@ export default function Dropzone({ onFilesSelected }) {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files ? Array.from(e.target.files) : [];
     onFilesSelected(files);
   };
 
@@ -51,7 +55,7 @@ export default function Dropzone({ onFilesSelected }) {
         justify-center
         cursor-pointer
         transition
-        ${dragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50/30"}
+        ${dragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50/30 hover:bg-gray-50"}
       `}
     >
       <span className="text-8xl text-gray-200 font-light">+</span>
