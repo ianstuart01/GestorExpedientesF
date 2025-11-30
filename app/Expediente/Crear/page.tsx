@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import Dropzone from "./Dropzone";
+import Dropzone from "../../components/Dropzone";
 
 // Datos de ejemplo para sectores
 const sectoresEjemplo = [
@@ -18,7 +18,6 @@ export default function CrearExpediente() {
   const searchParams = useSearchParams();
   const vieneDeInicio = searchParams.get("inicio") === "true";
   const [formData, setFormData] = useState({
-    usuario: "",
     tema: "",
     subTema: "",
     fechaAlta: new Date().toISOString().split('T')[0],
@@ -168,44 +167,22 @@ export default function CrearExpediente() {
               </select>
             </div>
 
-            {/* Usuario */}
-            <div className="mb-4">
-              <label htmlFor="usuario" className="block text-sm font-medium text-gray-900 mb-2">
-                Usuario 
-              </label>
-              <input
-                type="text"
-                id="usuario"
-                name="usuario"
-                value={formData.usuario}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                placeholder="Nombre del usuario"
-              />
-            </div>
-
             {/* Tema y Subtema */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label htmlFor="tema" className="block text-sm font-medium text-gray-900 mb-2">
                   Tema 
                 </label>
-                <select
+                <input
+                  type="text"
                   id="tema"
                   name="tema"
                   value={formData.tema}
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                >
-                  <option value="">Seleccione un tema</option>
-                  <option value="Práctica Supervisada">Práctica Supervisada</option>
-                  <option value="Tesis de Grado">Tesis de Grado</option>
-                  <option value="Proyecto Final">Proyecto Final</option>
-                  <option value="Práctica Profesional">Práctica Profesional</option>
-                  <option value="Investigación">Investigación</option>
-                </select>
+                  placeholder="Escriba el tema"
+                />
               </div>
               <div>
                 <label htmlFor="subTema" className="block text-sm font-medium text-gray-900 mb-2">
@@ -229,13 +206,12 @@ export default function CrearExpediente() {
                 Fecha Alta 
               </label>
               <input
-                type="date"
+                type="text"
                 id="fechaAlta"
                 name="fechaAlta"
                 value={formData.fechaAlta}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
+                readOnly
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed"
               />
             </div>
 

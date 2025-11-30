@@ -223,12 +223,6 @@ export default function RegistrarMovimiento() {
                 </p>
                 <p className="text-xs text-gray-500">ID: {expediente.id}</p>
               </div>
-              <button
-                onClick={handleVolver}
-                className="mt-4 md:mt-0 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
-              >
-                Volver
-              </button>
             </div>
           </div>
 
@@ -245,22 +239,15 @@ export default function RegistrarMovimiento() {
                   <label htmlFor="sectorOrigen" className="block text-sm font-medium text-gray-900 mb-2">
                     Sector Origen
                   </label>
-                  <select
+                  <input
                     id="sectorOrigen"
                     name="sectorOrigen"
                     value={formData.sectorOrigen}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-gray-900"
-                  >
-                    <option value="">Seleccionar sector origen</option>
-                    {sectoresDisponibles.map(sector => (
-                      <option key={sector} value={sector}>{sector}</option>
-                    ))}
-                  </select>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Sector actual del expediente: <span className="font-semibold">{expediente.sectorActual}</span>
-                  </p>
+                    disabled
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
+                  />
                 </div>
+
 
                 {/* Sector Destino */}
                 <div>
@@ -319,21 +306,6 @@ export default function RegistrarMovimiento() {
                   />
                 </div>
 
-                {/* Observaciones */}
-                <div>
-                  <label htmlFor="observaciones" className="block text-sm font-medium text-gray-900 mb-2">
-                    Observaciones Adicionales
-                  </label>
-                  <textarea
-                    id="observaciones"
-                    name="observaciones"
-                    value={formData.observaciones}
-                    onChange={handleInputChange}
-                    rows={2}
-                    placeholder="Observaciones o notas adicionales (opcional)..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-gray-900 resize-none"
-                  />
-                </div>
               </div>
 
               {/* Botones */}
