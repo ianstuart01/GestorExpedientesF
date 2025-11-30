@@ -16,8 +16,6 @@ const usuariosEjemplo = [
     estado: "Activo",
     fechaCreacion: "2025-01-15",
     telefono: "+54 221 123-4567",
-    ultimoAcceso: "2025-01-20 14:30",
-    descripcion: "Administrador principal del sistema con acceso completo a todas las funcionalidades."
   },
   {
     id: "2",
@@ -30,8 +28,6 @@ const usuariosEjemplo = [
     estado: "Activo",
     fechaCreacion: "2025-02-20",
     telefono: "+54 221 234-5678",
-    ultimoAcceso: "2025-01-20 10:15",
-    descripcion: "Usuario del laboratorio con permisos para gestionar expedientes en sus sectores asignados."
   },
   {
     id: "3",
@@ -44,8 +40,6 @@ const usuariosEjemplo = [
     estado: "Inactivo",
     fechaCreacion: "2025-01-10",
     telefono: "+54 221 345-6789",
-    ultimoAcceso: "2025-01-15 16:45",
-    descripcion: "Usuario inactivo temporalmente. Sin acceso al sistema."
   },
   {
     id: "4",
@@ -58,8 +52,6 @@ const usuariosEjemplo = [
     estado: "Activo",
     fechaCreacion: "2025-03-05",
     telefono: "+54 221 456-7890",
-    ultimoAcceso: "2025-01-20 09:00",
-    descripcion: "Supervisor con permisos de auditoría y revisión de expedientes en múltiples sectores."
   }
 ];
 
@@ -248,7 +240,7 @@ export default function DetalleUsuario() {
 
           {/* Información del usuario */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+            <div className="bg-linear-to-r from-blue-600 to-blue-700 px-6 py-4">
               <h2 className="text-xl font-bold text-white">Información del Usuario</h2>
             </div>
 
@@ -332,10 +324,6 @@ export default function DetalleUsuario() {
                         <p className="text-gray-600">{usuario.fechaCreacion}</p>
                       </div>
                       <div>
-                        <span className="text-gray-900 font-semibold">Último acceso:</span>
-                        <p className="text-gray-600">{usuario.ultimoAcceso || "No registrado"}</p>
-                      </div>
-                      <div>
                         <span className="text-gray-900 font-semibold">ID de usuario:</span>
                         <p className="text-gray-600 font-mono">{usuario.id}</p>
                       </div>
@@ -344,15 +332,6 @@ export default function DetalleUsuario() {
                 </div>
               </div>
 
-              {/* Descripción */}
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-4 pb-2 border-b border-blue-200">Descripción y Notas</h3>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-gray-600 whitespace-pre-line">
-                    {usuario.descripcion || "No hay descripción adicional para este usuario."}
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -367,7 +346,7 @@ export default function DetalleUsuario() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
-                Eliminar Usuario
+                Inactivar Usuario
               </button>
               <button
                 onClick={handleVolver}

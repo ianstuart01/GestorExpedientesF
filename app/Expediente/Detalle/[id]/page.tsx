@@ -130,15 +130,6 @@ export default function DetalleExpediente() {
     }
   };
 
-  const getAlcanceInfo = (numero: string) => {
-    const partes = numero.split('-');
-    const alcance = parseInt(partes[2]);
-    return {
-      numeroBase: `${partes[0]}-${partes[1]}`,
-      alcance,
-      esInicial: alcance === 0
-    };
-  };
 
   if (cargando) {
     return (
@@ -171,8 +162,6 @@ export default function DetalleExpediente() {
     );
   }
 
-  const alcanceInfo = getAlcanceInfo(expediente.numero);
-
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">
       {/* Contenido Principal */}
@@ -188,13 +177,6 @@ export default function DetalleExpediente() {
                   </h1>
                   <span className={`text-sm font-medium px-3 py-1 rounded-full border ${getEstadoColor(expediente.estado)}`}>
                     {expediente.estado}
-                  </span>
-                  <span className={`text-sm font-medium px-3 py-1 rounded-full border ${
-                    alcanceInfo.esInicial 
-                      ? "bg-gray-100 text-gray-800 border-gray-200" 
-                      : "bg-blue-100 text-blue-800 border-blue-200"
-                  }`}>
-                    Alcance: {alcanceInfo.alcance}
                   </span>
                 </div>
                 <p className="text-gray-600">Detalle completo del expediente</p>
@@ -272,16 +254,6 @@ export default function DetalleExpediente() {
                         <span className="text-gray-900 font-semibold">Estado:</span>
                         <span className={`text-sm font-medium px-2 py-1 rounded-full ${getEstadoColor(expediente.estado)}`}>
                           {expediente.estado}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-900 font-semibold">Nivel de Alcance:</span>
-                        <span className={`text-sm font-medium px-2 py-1 rounded-full ${
-                          alcanceInfo.esInicial 
-                            ? "bg-gray-100 text-gray-800 border-gray-200" 
-                            : "bg-blue-100 text-blue-800 border-blue-200"
-                        }`}>
-                          {alcanceInfo.esInicial ? "Inicial (00)" : `Avanzado (${alcanceInfo.alcance.toString().padStart(2, '0')})`}
                         </span>
                       </div>
                     </div>

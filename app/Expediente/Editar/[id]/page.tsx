@@ -11,7 +11,6 @@ const expedientesEjemplo = [
     tema: "Práctica Supervisada",
     fecha: "15/10/2025",
     observacion: "Laboratorio LINSI - Desarrollo Web",
-    usuario: "Juan Pérez",
     estado: "Activo",
     subTema: "Desarrollo Frontend",
     fechaAlta: "2025-10-15",
@@ -26,7 +25,6 @@ const expedientesEjemplo = [
     tema: "Tesis de Grado",
     fecha: "12/10/2025",
     observacion: "Sistema de Gestión Académica",
-    usuario: "María González",
     estado: "En revisión",
     subTema: "Base de Datos",
     fechaAlta: "2025-10-12",
@@ -50,11 +48,9 @@ export default function EditarExpediente() {
   const id = params.id as string;
 
   const [formData, setFormData] = useState({
-    usuario: "",
     numero: "",
     tema: "",
     subTema: "",
-    fechaAlta: "",
     caratula: "",
     observaciones: "",
     estado: "",
@@ -77,11 +73,9 @@ export default function EditarExpediente() {
       
       if (expediente) {
         setFormData({
-          usuario: expediente.usuario,
           numero: expediente.numero,
           tema: expediente.tema,
           subTema: expediente.subTema,
-          fechaAlta: expediente.fechaAlta,
           caratula: expediente.caratula,
           observaciones: expediente.observaciones,
           estado: expediente.estado,
@@ -257,44 +251,22 @@ export default function EditarExpediente() {
               )}
             </div>
 
-            {/* Usuario */}
-            <div className="mb-4">
-              <label htmlFor="usuario" className="block text-sm font-medium text-gray-900 mb-2">
-                Usuario *
-              </label>
-              <input
-                type="text"
-                id="usuario"
-                name="usuario"
-                value={formData.usuario}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                placeholder="Nombre del usuario"
-              />
-            </div>
-
             {/* Tema y Subtema */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label htmlFor="tema" className="block text-sm font-medium text-gray-900 mb-2">
                   Tema *
                 </label>
-                <select
+                <input
+                  type="text"
                   id="tema"
                   name="tema"
                   value={formData.tema}
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                >
-                  <option value="">Seleccione un tema</option>
-                  <option value="Práctica Supervisada">Práctica Supervisada</option>
-                  <option value="Tesis de Grado">Tesis de Grado</option>
-                  <option value="Proyecto Final">Proyecto Final</option>
-                  <option value="Práctica Profesional">Práctica Profesional</option>
-                  <option value="Investigación">Investigación</option>
-                </select>
+                  placeholder="Escriba el tema"
+                />
               </div>
               <div>
                 <label htmlFor="subTema" className="block text-sm font-medium text-gray-900 mb-2">
@@ -314,20 +286,6 @@ export default function EditarExpediente() {
 
             {/* Fecha Alta y Estado */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label htmlFor="fechaAlta" className="block text-sm font-medium text-gray-900 mb-2">
-                  Fecha Alta *
-                </label>
-                <input
-                  type="date"
-                  id="fechaAlta"
-                  name="fechaAlta"
-                  value={formData.fechaAlta}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900"
-                />
-              </div>
               <div>
                 <label htmlFor="estado" className="block text-sm font-medium text-gray-900 mb-2">
                   Estado *

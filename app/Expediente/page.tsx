@@ -102,14 +102,6 @@ export default function Expedientes() {
     }
   };
 
-  const getAlcanceColor = (numero: string) => {
-    const alcance = parseInt(numero.split('-')[2]);
-    if (alcance === 0) return "bg-gray-100 text-gray-800 border-gray-200";
-    if (alcance <= 2) return "bg-green-100 text-green-800 border-green-200";
-    if (alcance <= 5) return "bg-yellow-100 text-yellow-800 border-yellow-200";
-    return "bg-red-100 text-red-800 border-red-200";
-  };
-
   return (
     <main className="min-h-screen flex flex-col bg-cyan-50">
       {/* Contenido Principal */}
@@ -178,7 +170,7 @@ export default function Expedientes() {
           {/* Lista de Expedientes */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Header de la tabla */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+            <div className="bg-linear-to-r from-blue-600 to-blue-700 px-6 py-4">
               <h2 className="text-xl font-bold text-white text-center">
                 Lista de Expedientes ({filtrarExpedientes.length})
               </h2>
@@ -211,9 +203,6 @@ export default function Expedientes() {
                             </span>
                             <span className={`text-xs font-medium px-2 py-1 rounded-full border ${getEstadoColor(expediente.estado)}`}>
                               {expediente.estado}
-                            </span>
-                            <span className={`text-xs font-medium px-2 py-1 rounded-full border ${getAlcanceColor(expediente.numero)}`}>
-                              Alcance: {expediente.numero.split('-')[2]}
                             </span>
                             <span className="text-xs font-medium px-2 py-1 rounded-full border bg-purple-100 text-purple-800 border-purple-200">
                               {expediente.sector}
