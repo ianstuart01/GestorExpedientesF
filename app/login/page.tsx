@@ -1,31 +1,40 @@
 "use client";
 import React, { useState } from 'react';
 import Image from "next/image";
+import { login } from "../services/AuthService";
 
 export default function Home() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         console.log('--- INTENTO DE INICIO DE SESIÓN ---');
         console.log(`Email: ${email}`);
         console.log(`Password: ${password}`);
-        // Aquí iría la lógica de autenticación real.
-        // Por ahora, solo muestra el intento en la consola.
-        
-        // Redirigir a la página principal después del login
+
+        setErrorMessage(""); // limpiar error antes del intento
+
+        const result = await login(email, password);
+
+        if (!result.isSuccess) {
+            setErrorMessage(result.error || "Usuario o contraseña incorrectos");
+            return;
+        }
+
+        localStorage.setItem("token", result.token);
+
         window.location.href = "/Inicio";
     };
 
     return (
         <main className="min-h-screen flex flex-col bg-cyan-50">
 
-            {/* Contenido del Login - Centrado */}
             <section className="flex flex-1 justify-center items-start p-6 pt-[10vh] bg-cyan-50">
                 <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8 space-y-6 border border-gray-200">
                     
-                    {/* Encabezado del Formulario */}
                     <div className="text-center">
                         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
                             Iniciar Sesión
@@ -35,19 +44,16 @@ export default function Home() {
                         </p>
                     </div>
 
-                    {/* Formulario */}
                     <form onSubmit={handleLogin} className="space-y-6">
-                        {/* Campo de Correo Electrónico */}
+
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
                                 Correo Electrónico
                             </label>
                             <input
                                 id="email"
-                                name="email"
                                 type="email"
                                 required
-                                autoComplete="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 placeholder-gray-500"
@@ -55,25 +61,28 @@ export default function Home() {
                             />
                         </div>
 
-                        {/* Campo de Contraseña */}
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-900 mb-2">
                                 Contraseña
                             </label>
                             <input
                                 id="password"
-                                name="password"
                                 type="password"
                                 required
-                                autoComplete="current-password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-900 placeholder-gray-500"
                                 placeholder="••••••••"
                             />
+
+                            {/* 🔥 Mensaje de error aquí */}
+                            {errorMessage && (
+                                <p className="mt-2 text-sm text-red-600 font-medium">
+                                    {errorMessage}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Botón de Acceso */}
                         <div>
                             <button
                                 type="submit"
@@ -84,7 +93,6 @@ export default function Home() {
                         </div>
                     </form>
 
-                    {/* Enlace de Registro y Contraseña */}
                     <div className="flex justify-between text-sm">
                         <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition duration-150">
                             ¿Olvidaste tu contraseña?
